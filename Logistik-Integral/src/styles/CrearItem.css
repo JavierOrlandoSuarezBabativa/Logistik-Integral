@@ -1,0 +1,36 @@
+#solicitute-details-container {
+    position: relative;
+    height: fit-content;
+    width: 90vw;
+    padding: 5px;
+    border-radius: 15px;
+    background: #fbfafa;
+    margin: 15px auto;
+}
+
+#solicitute-details-container div {
+    width: 100%;
+    margin: 20px auto;
+}
+
+
+#solicitute-details-container h4{
+    font-size: 15px;
+    margin-left: 6px;
+}
+
+.inventory-details {
+    border-radius: 5px;
+    width: 90%;
+    background: #5154a47c;
+    padding: 10px;
+    margin: 2px auto;
+    font-size: 13px;
+    overflow-wrap: break-word;
+}
+
+#total-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

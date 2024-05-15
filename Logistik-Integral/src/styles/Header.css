@@ -1,0 +1,32 @@
+#header {
+    background:  rgb(49, 68, 213);
+    width: 100vw;
+    height: 50px;
+    text-align: center;
+}
+
+
+#icons-container {
+    position: relative;
+    display: flex;
+    padding: 3px;
+    justify-content: center;
+}
+
+#icons-container div h2 { 
+    margin-top: 5px;
+    font-size: 28px;
+}
+
+
+.left{
+    position: absolute;
+    font-size: 45px;
+    left: 0px;
+}
+
+.right{
+    position: absolute;
+    font-size: 45px;
+    right: 0px;
+}
