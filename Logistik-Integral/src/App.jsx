@@ -13,10 +13,13 @@ import  {UseSolicitudes,
 import AuxinventoryReception from './fullComponents/Auxiliary/AuxInventoryReception.jsx'
 import AdminCreateRef from './fullComponents/Admin/AdminCreateRef.jsx'
 import CreateSolicitute from './fullComponents/Client/CreateSolicitute.jsx'
+import AuxSendRef from './fullComponents/Auxiliary/AuxSendRef.jsx'
 
 
 
 export const UserType = React.createContext()
+
+export const Refs = React.createContext()
 
 
 
@@ -24,6 +27,11 @@ export const UserType = React.createContext()
 export default function App(){
 
     const [userType, setUserType] = useState(null)
+
+    const [referencesData, setReferencesData] = useState([])
+
+    const [singleRef, setSingleRef] = useState()
+
 
 
 
@@ -72,7 +80,20 @@ export default function App(){
         },
         {
             path: '/reception',
-            element: <AuxinventoryReception></AuxinventoryReception>
+            element: <>
+                        <Refs.Provider value={{referencesData, setReferencesData, setSingleRef }}>
+                            <AuxinventoryReception></AuxinventoryReception>
+                        </Refs.Provider> 
+                    </>
+        },
+        {
+            path: '/id',
+            element:
+                    <>
+                    <Refs.Provider value={{referencesData, singleRef}}>
+                        <AuxSendRef/>
+                    </Refs.Provider>
+                    </>
         },
         {
             path: '/createItem',
@@ -95,12 +116,10 @@ export default function App(){
 
 
     return(
-        <UserType.Provider value={{userType, 
-                                setUserType,
-                                    }}>
-        <div>
-            <RouterProvider router={router}/>
-        </div>
+        <UserType.Provider value={{userType, setUserType}}>
+                <div>
+                    <RouterProvider router={router}/>
+                </div>
         </UserType.Provider>
         
     )

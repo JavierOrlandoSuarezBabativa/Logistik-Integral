@@ -70,7 +70,6 @@ app.post("/login", (req, res) => {
     }
     if (results.length > 0) {
       res.send(results);
-      console.log("ingreso ok");
     } else {
       res.send({ message: "Credenciales no existen!" });
     }
@@ -108,13 +107,12 @@ app.post("/newReference", (req, res) => {
     if (err) {
       res.send(err);
     } else {
-      console.log("Reference inserted successfully");
       res.send({ message: "Reference added!!" });
     }
   });
 });
 
-//
+// Obtener todas las referencias de la DB
 app.get("/sqlReferencias", (req, res) => {
   const SQLReferencias = "SELECT * FROM referencias";
 
@@ -126,3 +124,24 @@ app.get("/sqlReferencias", (req, res) => {
     }
   });
 });
+
+// app.post("/refFiltradas", (req, res) => {
+//   const sentModulo = req.body.fam;
+//   const sentNewReference = req.body.ref;
+//   const sentNewModelo = req.body.mod;
+//   const sentNewMarca = req.body.mar;
+
+//   const SQL = `SELECT * FROM referencias WHERE
+//               Modulos_Id_Modulo = ${sentModulo} AND
+//               Referencia_Equipo = ${sentNewReference} AND
+//               Marca = ${sentNewModelo} AND
+//               Modelo = ${sentNewMarca}`;
+
+//   db.query(SQL, (error, result) => {
+//     if (error) {
+//       console.log(error);
+//     } else {
+//       res.send(result);
+//     }
+//   });
+// });

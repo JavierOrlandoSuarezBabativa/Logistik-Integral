@@ -1,38 +1,25 @@
 import '../styles/Login.css'
-import Axios from 'axios'
-import { useEffect, useState } from 'react'
+import {PropTypes} from 'prop-types'
 
-export default function NewItemReception(){
+export default function NewItemReception({data, addNewReferences}){
 
-    const [referencesData, setReferencesData] = useState([])
+
  
-    let marcasFiltradas = []
+    let marcasFiltradas = [];
+    let refFiltradas = [];
+    let modelosFiltrados = [];
     
-    referencesData.forEach((ref) => {
+    data.forEach((ref) => {
         if(!marcasFiltradas.includes(ref.Marca)){
             marcasFiltradas.push(ref.Marca)
         }
-    })
-
-    console.log(marcasFiltradas)
-
-      
-
-
-
-    async function fetchReferencias() {
-        try{
-            const res = await Axios('http://localhost:3002/sqlReferencias')
-            setReferencesData(res.data)
-        }catch (err) {
-            console.log(err)
+        if(!refFiltradas.includes(ref.Referencia_Equipo)){
+            refFiltradas.push(ref.Referencia_Equipo)
         }
-    }
-
-    useEffect(() => {
-        fetchReferencias()
-    },[])
-
+        if(!modelosFiltrados.includes(ref.Modelo)){
+            modelosFiltrados.push(ref.Modelo)
+        }
+    })
 
     return(
         <>
@@ -43,33 +30,36 @@ export default function NewItemReception(){
             <div className="information-requirement-input">
                 <select 
                 name="marca" 
-                className='select-container'>
+                className='select-container'
+                onChange={addNewReferences}>
                 <option value="">MARCA</option>
-                <option value="Administrador">Administrador</option>
-                <option value="Auxiliar">Auxiliar</option>
-                <option value="Cliente">Cliente</option>
+                {
+                marcasFiltradas.map((marca, index) => <option value={marca} key={index}>{marca}</option>)
+                }
                 </select>
             </div>
 
             <div className="information-requirement-input">
                 <select 
                 name="referencia" 
-                className='select-container'>
+                className='select-container'
+                onChange={addNewReferences}>
                 <option value="">REFERENCIA</option>
-                <option value="Administrador">Administrador</option>
-                <option value="Auxiliar">Auxiliar</option>
-                <option value="Cliente">Cliente</option>
+                {
+                refFiltradas.map((ref, index) => <option value={ref} key={index}>{ref}</option>)
+                }
                 </select>
             </div>
 
             <div className="information-requirement-input">
                 <select 
                 name="modelo" 
-                className='select-container'>
+                className='select-container'
+                onChange={addNewReferences}>
                 <option value="">MODELO</option>
-                <option value="Administrador">Administrador</option>
-                <option value="Auxiliar">Auxiliar</option>
-                <option value="Cliente">Cliente</option>
+                {
+                modelosFiltrados.map((model, index) => <option value={model} key={index}>{model}</option>)
+                }
                 </select>
             </div>
 
@@ -89,4 +79,10 @@ export default function NewItemReception(){
 </div>
         </>
     )
+}
+
+NewItemReception.propTypes = {
+    data: PropTypes.array,
+    fetchFunction: PropTypes.func,
+    addNewReferences: PropTypes.func
 }
