@@ -53,7 +53,7 @@ export default function AuxInventoryReception(){
         {/* <NewItemReception
             data={referencesData}
             addNewReferences={addNewReferences}/> */}
-        {referencesFiltered.map(({
+        {referencesFiltered.map(    ({
                             Modulos_Id_Modulo,  
                             Referencia_Equipo,
                             Marca, 

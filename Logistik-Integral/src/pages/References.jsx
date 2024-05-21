@@ -37,7 +37,7 @@ export default function References({modulo, referencia, marca, modelo, hash, set
                 </div>
 
                 <div className="details-register register-container-item">
-                    <button onClick={getRefID}>xxxx</button> <span><input type="number" min={0}/></span>
+                    <button onClick={getRefID}>xxxx</button>
                 </div>
             </div>
         </Link>

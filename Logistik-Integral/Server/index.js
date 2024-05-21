@@ -6,16 +6,19 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cors());
 
-app.listen(3002, () => {
-  console.log("Server is running 3002");
-});
-
 // Conexion a la BD MySql
 const db = mysql.createConnection({
   user: "root",
   host: "localhost",
   password: "",
   database: "logistik",
+});
+
+app.get("/", (req, res) => {
+  return res.send("Running");
+});
+app.listen(3002, () => {
+  console.log("Server is running 3002");
 });
 
 // Registro de nuevos usuarios
@@ -112,6 +115,43 @@ app.post("/newReference", (req, res) => {
   });
 });
 
+app.post("/cantidad", (req, res) => {
+  const sentRef = req.body.newRef;
+  const sentCant = req.body.newCantidad;
+
+  const SQL4 =
+    "INSERT INTO equipos (Referencias_Id_Referencia, Cantidades) VALUES (?,?)";
+
+  const Values4 = [sentRef, sentCant];
+
+  db.query(SQL4, Values4, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send({ message: "Cantidad Ok" });
+    }
+  });
+});
+
+// app.post("/seriales", (req, res) => {
+//   const sentRef = req.body.newRef;
+//   const sentSerial = req.body.newSerial;
+
+//   console.log(req);
+
+//   const SQL = "INSERT INTO seriales (id_Ref, Serial) VALUES (?,?)";
+
+//   const Values = [sentRef, sentSerial];
+
+//   db.query(SQL, Values, (err, results) => {
+//     if (err) {
+//       res.send(err);
+//     } else {
+//       res.send({ message: "Cantidad Ok" });
+//     }
+//   });
+// });
+
 // Obtener todas las referencias de la DB
 app.get("/sqlReferencias", (req, res) => {
   const SQLReferencias = "SELECT * FROM referencias";
@@ -121,27 +161,7 @@ app.get("/sqlReferencias", (req, res) => {
       console.log(error);
     } else {
       res.send(result);
+      console.log("todo Ok");
     }
   });
 });
-
-// app.post("/refFiltradas", (req, res) => {
-//   const sentModulo = req.body.fam;
-//   const sentNewReference = req.body.ref;
-//   const sentNewModelo = req.body.mod;
-//   const sentNewMarca = req.body.mar;
-
-//   const SQL = `SELECT * FROM referencias WHERE
-//               Modulos_Id_Modulo = ${sentModulo} AND
-//               Referencia_Equipo = ${sentNewReference} AND
-//               Marca = ${sentNewModelo} AND
-//               Modelo = ${sentNewMarca}`;
-
-//   db.query(SQL, (error, result) => {
-//     if (error) {
-//       console.log(error);
-//     } else {
-//       res.send(result);
-//     }
-//   });
-// });
