@@ -15,11 +15,11 @@ import AdminCreateRef from './fullComponents/Admin/AdminCreateRef.jsx'
 import CreateSolicitute from './fullComponents/Client/CreateSolicitute.jsx'
 import AuxSendRef from './fullComponents/Auxiliary/AuxSendRef.jsx'
 
-
-
 export const UserType = React.createContext()
 
 export const Refs = React.createContext()
+
+export const Serials = React.createContext()
 
 
 
@@ -31,6 +31,9 @@ export default function App(){
     const [referencesData, setReferencesData] = useState([])
 
     const [singleRef, setSingleRef] = useState()
+
+    const [serialRef, setSerialRef] = useState()
+
 
 
 
@@ -72,11 +75,19 @@ export default function App(){
         },
         {
             path: '/inventarios',
-            element: <UseInventory></UseInventory>
+            element: <>
+                    <Serials.Provider value={{setSerialRef}}>
+                        <UseInventory></UseInventory>
+                    </Serials.Provider>
+                    </>
         },
         {
             path: '/inventoryDetails',
-            element: <UseInventoryDetails></UseInventoryDetails>
+            element: <>
+                    <Serials.Provider value={{serialRef}}>
+                    <UseInventoryDetails></UseInventoryDetails>
+                    </Serials.Provider>
+                    </>
         },
         {
             path: '/reception',

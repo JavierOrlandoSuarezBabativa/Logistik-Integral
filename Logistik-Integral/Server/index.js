@@ -14,9 +14,34 @@ const db = mysql.createConnection({
   database: "logistik",
 });
 
+// Referencias y cantidades totales
 app.get("/", (req, res) => {
-  return res.send("Running");
+  const SQLReferencias =
+    "SELECT referencias.Modulos_Id_Modulo as Family, referencias.Referencia_Equipo as Ref, referencias.Marca, SUM(equipos.Cantidades) as Total FROM referencias INNER JOIN equipos on equipos.Referencias_Id_Referencia = referencias.Id_Referencia GROUP BY referencias.Referencia_Equipo;";
+
+  db.query(SQLReferencias, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+      console.log("todo Ok");
+    }
+  });
 });
+
+app.get("/seriales", (req, res) => {
+  const SQL = "SELECT id_Ref as id, Serial FROM `seriales`";
+
+  db.query(SQL, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+      console.log("todo Ok");
+    }
+  });
+});
+
 app.listen(3002, () => {
   console.log("Server is running 3002");
 });

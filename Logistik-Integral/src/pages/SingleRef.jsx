@@ -19,10 +19,7 @@ export default function SingleRef () {
 
     const navigateTo = useNavigate()
 
-
     const serialesArray = Object.values(seriales)
-
-    console.log(serialesArray)
 
     const uniqueRef = referencesData.find((ref) => {
         return ref.Id_Referencia == singleRef

@@ -1,5 +1,5 @@
 
-export default function Serial(){
+export default function Serial({id, serial}){
 
     const divStyle = {
         width: '90vw',
@@ -37,11 +37,11 @@ export default function Serial(){
             <div style={divStyle}>
                 <div style={listDiv}>
                     <h3>Serial</h3>
-                    <h3>Estado</h3>
+                    <h3>{serial}</h3>
                 </div>
                 <div style={listDiv.childStyle}>
-                    <p>xxxxxxxxxxxx</p>
-                    <b>xxxxxxx</b>
+                    <b>ID</b>
+                    <p>{id}</p>
                 </div>
                 
             </div>

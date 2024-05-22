@@ -50,9 +50,6 @@ export default function AuxInventoryReception(){
             buttonSpecification='Guardar'
             newReference={newReference}
             addNewReferences={addNewReferences}/>
-        {/* <NewItemReception
-            data={referencesData}
-            addNewReferences={addNewReferences}/> */}
         {referencesFiltered.map(    ({
                             Modulos_Id_Modulo,  
                             Referencia_Equipo,

@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import '../styles/Solicitudes.css'
 import { Link } from 'react-router-dom'
 
