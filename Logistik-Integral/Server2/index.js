@@ -14,6 +14,11 @@ const db = mysql.createConnection({
   database: "logistik",
 });
 
+app2.listen(3003, () => {
+  console.log("Server is running 3003");
+});
+
+// Cantidades totales de referencias
 app2.get("/", (req, res) => {
   const SQLQuantity =
     "SELECT Referencias_Id_Referencia, Cantidades FROM equipos";
@@ -25,10 +30,6 @@ app2.get("/", (req, res) => {
       res.send(result);
     }
   });
-});
-
-app2.listen(3003, () => {
-  console.log("Server is running 3003");
 });
 
 app2.post("/seriales", (req, res) => {

@@ -1,5 +1,6 @@
 
 import { createBrowserRouter, RouterProvider} from 'react-router-dom'
+
 import FrontPage from './pages/FrontPage.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Header from './components/Header.jsx'
@@ -14,6 +15,7 @@ import AuxinventoryReception from './fullComponents/Auxiliary/AuxInventoryRecept
 import AdminCreateRef from './fullComponents/Admin/AdminCreateRef.jsx'
 import CreateSolicitute from './fullComponents/Client/CreateSolicitute.jsx'
 import AuxSendRef from './fullComponents/Auxiliary/AuxSendRef.jsx'
+import ClientReceiverDetails from './fullComponents/Client/ClientRecevierDetails.jsx'
 
 export const UserType = React.createContext()
 
@@ -71,7 +73,13 @@ export default function App(){
         },
         {
             path: '/solicitudes',
-            element: <div><UseSolicitudes ></UseSolicitudes></div>
+            element: <div><UseSolicitudes ></UseSolicitudes></div>,
+            children: [
+                {
+                    path: 'receiverDetails',
+                    element: <ClientReceiverDetails/>
+                }
+            ]
         },
         {
             path: '/inventarios',

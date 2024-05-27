@@ -14,34 +14,6 @@ const db = mysql.createConnection({
   database: "logistik",
 });
 
-// Referencias y cantidades totales
-app.get("/", (req, res) => {
-  const SQLReferencias =
-    "SELECT referencias.Modulos_Id_Modulo as Family, referencias.Referencia_Equipo as Ref, referencias.Marca, SUM(equipos.Cantidades) as Total FROM referencias INNER JOIN equipos on equipos.Referencias_Id_Referencia = referencias.Id_Referencia GROUP BY referencias.Referencia_Equipo;";
-
-  db.query(SQLReferencias, (error, result) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.send(result);
-      console.log("todo Ok");
-    }
-  });
-});
-
-app.get("/seriales", (req, res) => {
-  const SQL = "SELECT id_Ref as id, Serial FROM `seriales`";
-
-  db.query(SQL, (error, result) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.send(result);
-      console.log("todo Ok");
-    }
-  });
-});
-
 app.listen(3002, () => {
   console.log("Server is running 3002");
 });
@@ -140,6 +112,7 @@ app.post("/newReference", (req, res) => {
   });
 });
 
+// Cantidades totales x referencia
 app.post("/cantidad", (req, res) => {
   const sentRef = req.body.newRef;
   const sentCant = req.body.newCantidad;
@@ -158,24 +131,35 @@ app.post("/cantidad", (req, res) => {
   });
 });
 
-// app.post("/seriales", (req, res) => {
-//   const sentRef = req.body.newRef;
-//   const sentSerial = req.body.newSerial;
+// --------------------------------------------------------------------------------------------------------------
 
-//   console.log(req);
+// Referencias y cantidades totales
+app.get("/", (req, res) => {
+  const SQLReferencias =
+    "SELECT referencias.Modulos_Id_Modulo as Family, equipos.Referencias_Id_Referencia as Id_Ref, referencias.Referencia_Equipo as Ref, referencias.Marca, SUM(equipos.Cantidades) as Total FROM referencias INNER JOIN equipos on equipos.Referencias_Id_Referencia = referencias.Id_Referencia GROUP BY referencias.Referencia_Equipo;;";
 
-//   const SQL = "INSERT INTO seriales (id_Ref, Serial) VALUES (?,?)";
+  db.query(SQLReferencias, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
 
-//   const Values = [sentRef, sentSerial];
+// Seriales totales
+app.get("/seriales", (req, res) => {
+  const SQL = "SELECT id_Ref as id, Serial FROM `seriales`";
 
-//   db.query(SQL, Values, (err, results) => {
-//     if (err) {
-//       res.send(err);
-//     } else {
-//       res.send({ message: "Cantidad Ok" });
-//     }
-//   });
-// });
+  db.query(SQL, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+      console.log("todo Ok");
+    }
+  });
+});
 
 // Obtener todas las referencias de la DB
 app.get("/sqlReferencias", (req, res) => {

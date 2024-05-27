@@ -31,7 +31,6 @@ export default function SingleRef () {
             newCantidad: inputNum
         }).then(
             createSeriales(),
-            console.log('ok'),
             navigateTo('/reception')
 
         )
@@ -43,7 +42,6 @@ export default function SingleRef () {
                 newRef: uniqueRef.Id_Referencia,
                 newSerial: serialesArray[i]
             }).then(
-                console.log('Ok x 2 ')
             )   
         }
     }
