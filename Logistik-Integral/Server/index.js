@@ -55,14 +55,20 @@ app.post("/registro", (req, res) => {
 
 // login de los usuarios ya registrados
 app.post("/login", (req, res) => {
-  const loginSentUsername = req.body.LoginUserName;
-  const loginSentRol = req.body.LoginUserRol;
-  const loginSentPassword = req.body.LoginUserPassword;
+  // const SentUsername = req.body.LoginUserName;
+  // const SentRol = req.body.LoginUserRol;
+  // const SentPassword = req.body.LoginUserPassword;
+
+  const SentUsername = req.body.name;
+  const SentRol = req.body.rol;
+  const SentPassword = req.body.password;
+
+  console.log(req.body);
 
   const SQL =
     "SELECT * FROM usuarios WHERE Nombre = ? && Cargo = ? && Contraseña = ?";
 
-  const Values = [loginSentUsername, loginSentRol, loginSentPassword];
+  const Values = [SentUsername, SentRol, SentPassword];
 
   db.query(SQL, Values, (err, results) => {
     if (err) {
@@ -131,6 +137,72 @@ app.post("/cantidad", (req, res) => {
   });
 });
 
+// Crear solicitud de envio
+app.post("/solicitud", (req, res) => {
+  const sentRef = req.body.id_Ref;
+  const sentIdReceiver = req.body.idReceiver;
+  const sentQuantity = req.body.quantity;
+  const sentStatus = "Pediente por revisar";
+  const sentWorth = req.body.worth;
+  const sentDate = req.body.fecha;
+  const sentProgress = "Pendiente por revisar";
+  const sentObservations = "Pendiente por revisar";
+
+  const SQL =
+    "INSERT INTO solicitudes (Id_Referencia, Destinatarios_Id_Destinatario, Cantidad, Estado_Solicitud, Valor_Total, Fecha, Progreso, Observaciones) VALUES (?,?,?,?,?,?,?,?)";
+
+  const Values = [
+    sentRef,
+    sentIdReceiver,
+    sentQuantity,
+    sentStatus,
+    sentWorth,
+    sentDate,
+    sentProgress,
+    sentObservations,
+  ];
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send({ message: "Cantidad Ok" });
+    }
+  });
+});
+
+// Crear detalles del envio
+app.post("/detalles", (req, res) => {
+  const sentId = req.body.cedula;
+  const sentName = req.body.nombre;
+  const sendLastName = req.body.apellido;
+  const sentAdress = req.body.direccion;
+  const sentCity = req.body.ciudad;
+  const sentNumber = req.body.telefono;
+  const ob = "Revisar despues Javier";
+
+  const SQL =
+    "INSERT INTO destinatarios (Cedula, Nombres, Apellidos, Direccion, Ciudad, Telefono, Observaciones) VALUES (?,?,?,?,?,?,?)";
+
+  const Values = [
+    sentId,
+    sentName,
+    sendLastName,
+    sentAdress,
+    sentCity,
+    sentNumber,
+    ob,
+  ];
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send({ message: "Ok" });
+    }
+  });
+});
+
 // --------------------------------------------------------------------------------------------------------------
 
 // Referencias y cantidades totales
@@ -164,6 +236,36 @@ app.get("/seriales", (req, res) => {
 // Obtener todas las referencias de la DB
 app.get("/sqlReferencias", (req, res) => {
   const SQLReferencias = "SELECT * FROM referencias";
+
+  db.query(SQLReferencias, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+      console.log("todo Ok");
+    }
+  });
+});
+
+// Obtener el ultimo id de la tabla destinatarios
+app.get("/detailsId", (req, res) => {
+  const SQLReferencias =
+    "SELECT Id_Destinatario FROM `destinatarios` ORDER BY Id_Destinatario DESC LIMIT 1;";
+
+  db.query(SQLReferencias, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+      console.log("todo Ok");
+    }
+  });
+});
+
+// Solicitudes del cliente
+app.get("/RequestsData", (req, res) => {
+  const SQLReferencias =
+    "SELECT Destinatarios_Id_Destinatario as Id, GROUP_CONCAT(Numero_Solicitud) as request, SUM(Cantidad) as quantity, Fecha as date, Estado_Solicitud as status, Observaciones as observations from solicitudes GROUP by Destinatarios_Id_Destinatario;";
 
   db.query(SQLReferencias, (error, result) => {
     if (error) {

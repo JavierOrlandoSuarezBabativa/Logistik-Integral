@@ -2,24 +2,29 @@ import {useState, useEffect, useCallback} from "react"
 import PropTypes from 'prop-types'
 
 import UseRefSelect from "../dinamicHooks/UseRefSelect"
-import RefSelect from "./RefSelect.jsx"
 import fetchRefQuantity from "../fetch/fetchRefQuantity.js"
 
-import { Outlet } from "react-router-dom"
+import RefSelect from "./RefSelect.jsx"
 
-
-
-export default function Solicitud({requestRefs, setRequestRefs}){
+export default function Solicitud({requestRefs, setRequestRefs, detailsId}){
 
     const [quantitiesRef, setQuantitiesRef] = useState([])
-
     const [amount, setAmount] = useState(0)
+    const [refId, setId] = useState()
 
     const {refSelect, handleChange} = UseRefSelect()
-
-    const [refId, setId] = useState()
  
     const singleRef = quantitiesRef.find((ref) => ref.Ref == refSelect)
+
+    function authReceiverID () {
+        let receiverId;
+        if(Array.isArray(detailsId) && detailsId.length === 0){
+            receiverId = 1
+        } else {
+            receiverId = detailsId[0].Id_Destinatario + 1
+        }
+        return receiverId
+    }
  
 
     const checkSingleRefArray = useCallback(() => {
@@ -40,15 +45,13 @@ export default function Solicitud({requestRefs, setRequestRefs}){
 
     useEffect(() => {
         checkRefId()
-    }, [singleRefData])
-
+        checkSingleRefArray()
+    }, [checkRefId, checkSingleRefArray])
 
     useEffect(() => {
         fetchRefQuantity()
         .then(quantities => setQuantitiesRef(quantities))
-        checkSingleRefArray()
     }, [])
-
 
     function addClick () {
         setAmount(prevAmount => prevAmount + 1)
@@ -58,16 +61,26 @@ export default function Solicitud({requestRefs, setRequestRefs}){
         setAmount(prevAmount => prevAmount - 1)
     }
 
+    // function getDate () {
+    //     const todayTime = Date.now();
+    //     const date = new Date(todayTime);
+
+    //     return date.toLocaleDateString()
+    // }
+
     function getDate () {
         const todayTime = Date.now();
-        const date = new Date(todayTime);
+        const date = new Date(todayTime).toLocaleDateString();
+        let datePrevFormat = date;
+        const dateNewFormat = datePrevFormat.split('/').reverse().join('/')
 
-        return date.toLocaleDateString()
+        return dateNewFormat
     }
 
     function setRefData () {
         let newRefs = [...requestRefs, {
-                                        Id_Ref: refId,
+                                        id_Ref: refId,
+                                        idReceiver: authReceiverID(),
                                         quantity: amount,
                                         worth: 0,
                                         fecha: getDate(),
@@ -104,8 +117,9 @@ export default function Solicitud({requestRefs, setRequestRefs}){
 
 }
 
-Solicitud.proptypes = {
+Solicitud.propTypes = {
     requestRefs: PropTypes.array,
-    setRequestRefs: PropTypes.func
+    setRequestRefs: PropTypes.func,
+    detailsId: PropTypes.array
 }
 

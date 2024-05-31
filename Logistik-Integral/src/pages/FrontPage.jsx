@@ -1,26 +1,25 @@
 import '../styles/FrontPage.css'
 import Logo from '../assets/logo_1.png'
-import { Link, useNavigate } from 'react-router-dom'
+
+import { Link} from 'react-router-dom'
 import { useEffect, useState, useContext } from 'react'
-import Axios from 'axios'
 import {UserType} from '../App'
+
+import Axios from 'axios'
+
+import Uselogin from '../dinamicHooks/UseLogin.jsx'
+import Login from '../Services/Login.jsx'
 
 
 function FrontPage() {
 
-  const [loginUserName, setLoginUserName] = useState('')
-  const [loginUserRol, setLoginUserRol] = useState('')
-  const [loginUserPassword, setLoginUserPassword] = useState('')
-  const navigateTo = useNavigate()
+  const {error, switchUserType} = Login()
+
+  const {userInfo, checkUserInfo, setUserInfo} = Uselogin()
+  const {setUserType} = useContext(UserType)
+
   const [loginStatus, setLoginStatus] = useState('')
   const [statusHolder, setStatusHolder] = useState('message')
-
- const {setUserType} = useContext(UserType)
-
-
-
-
-
 
   useEffect(()=>{
     if(loginStatus !== ''){
@@ -28,42 +27,19 @@ function FrontPage() {
       setTimeout(()=>{
         setStatusHolder('message')
         setLoginStatus('')
-        setLoginUserName('')
-        setLoginUserRol('')
-        setLoginUserPassword('')
-      }, 3000)
+      }, 1500)
     }
   }, [loginStatus])
 
   function loginUser(e){
     e.preventDefault()
-    Axios.post('http://localhost:3002/login', {
-      LoginUserName:loginUserName,
-      LoginUserRol:loginUserRol,
-      LoginUserPassword:loginUserPassword,
-    }).then((response) => {
+    Axios.post('http://localhost:3002/login', userInfo)
+    .then((response) => {
       if(response.data.message){
-        navigateTo('/')
-        setLoginStatus(response.data.message)
+        error(response, setLoginStatus, setUserInfo)
       }
       else{
-       switch(response.data[0].Cargo){
-        case 'Administrador':
-          setUserType('Administrador')
-          navigateTo('/administrador')
-          break
-        case 'Auxiliar':
-          setUserType('Auxiliar')
-          navigateTo('/auxiliar')
-          break
-        case 'Cliente':
-          setUserType('Cliente')
-          navigateTo('/cliente')
-        break
-        default:
-          break
-       }
-       
+        switchUserType(response, setUserType)
       }
     }
     )
@@ -82,20 +58,21 @@ function FrontPage() {
         <div className="information-requirement-input">
           <i className="material-icons">person</i>
           <input 
-            type="text" 
+            type="text"
+            name='name' 
             placeholder="Nombre de usuario"
-            value={loginUserName}
-            onChange={(e) => setLoginUserName(e.target.value)} 
-            />
+            value={userInfo.name}
+            onChange={checkUserInfo} 
+          />
         </div>
 
         <div className="information-requirement-input">
           <select 
-            name="" 
-            id="" 
+            name="rol" 
             className='select-container'
-            onChange={(e) => setLoginUserRol(e.target.value)}
-            >
+            onChange={checkUserInfo}
+            value={userInfo.rol}
+          >
             <option value="">Rol de usuario</option>
             <option value="Administrador">Administrador</option>
             <option value="Auxiliar">Auxiliar</option>
@@ -106,19 +83,26 @@ function FrontPage() {
         <div className="information-requirement-input">
           <i className="material-icons">password</i>
           <input 
-          type="password" 
-          value={loginUserPassword}
-          placeholder="Contraseña"
-          onChange={(e) => setLoginUserPassword(e.target.value)}
+            type="password"
+            name='password' 
+            value={userInfo.password}
+            placeholder="Contraseña"
+            onChange={checkUserInfo}
           />
         </div>
 
         <div className="button">
-          <button id="log-in_button" type='submit' onClick={loginUser}>INGRESAR</button>
+          <button
+            id="log-in_button" 
+            type='submit' 
+            onClick={loginUser}
+          >INGRESAR</button>
           <hr />
           <Link to={'/signUp'}>
-            <button id="register_button" type='submit'>SIGN UP</button>
-            </Link>
+            <button 
+              id="register_button" 
+              type='submit'>SIGN UP</button>
+          </Link>
         </div>
       </div>
     </form>

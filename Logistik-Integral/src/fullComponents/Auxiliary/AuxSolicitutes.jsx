@@ -6,7 +6,7 @@ export default function AuxSolicitutes(){
     return(
         <>
         <Header page='Solicitudes'/>
-        <Solicitudes button='Gestionar'></Solicitudes>
+        <Solicitudes></Solicitudes>
         </>
     )
 }
