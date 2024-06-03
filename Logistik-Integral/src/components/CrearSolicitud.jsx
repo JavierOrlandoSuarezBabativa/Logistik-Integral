@@ -61,13 +61,6 @@ export default function Solicitud({requestRefs, setRequestRefs, detailsId}){
         setAmount(prevAmount => prevAmount - 1)
     }
 
-    // function getDate () {
-    //     const todayTime = Date.now();
-    //     const date = new Date(todayTime);
-
-    //     return date.toLocaleDateString()
-    // }
-
     function getDate () {
         const todayTime = Date.now();
         const date = new Date(todayTime).toLocaleDateString();

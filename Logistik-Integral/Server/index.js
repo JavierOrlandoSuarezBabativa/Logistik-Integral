@@ -28,8 +28,6 @@ app.post("/registro", (req, res) => {
   const sentPassword = req.body.UserPassword;
   const sentNumber = req.body.UserNumber;
 
-  console.log(req.body);
-
   const SQL =
     "INSERT INTO usuarios (Nombre, Apellido, Cedula, Celular, Cargo, Contraseña, Bodegas_Id_Bodega) VALUES (?,?,?,?,?,?,?)";
 
@@ -55,15 +53,9 @@ app.post("/registro", (req, res) => {
 
 // login de los usuarios ya registrados
 app.post("/login", (req, res) => {
-  // const SentUsername = req.body.LoginUserName;
-  // const SentRol = req.body.LoginUserRol;
-  // const SentPassword = req.body.LoginUserPassword;
-
   const SentUsername = req.body.name;
   const SentRol = req.body.rol;
   const SentPassword = req.body.password;
-
-  console.log(req.body);
 
   const SQL =
     "SELECT * FROM usuarios WHERE Nombre = ? && Cargo = ? && Contraseña = ?";
@@ -221,7 +213,7 @@ app.get("/", (req, res) => {
 
 // Seriales totales
 app.get("/seriales", (req, res) => {
-  const SQL = "SELECT id_Ref as id, Serial FROM `seriales`";
+  const SQL = "SELECT * FROM `seriales`";
 
   db.query(SQL, (error, result) => {
     if (error) {
@@ -273,6 +265,48 @@ app.get("/RequestsData", (req, res) => {
     } else {
       res.send(result);
       console.log("todo Ok");
+    }
+  });
+});
+
+// Solicitud individual
+app.get("/RequestInfo", (req, res) => {
+  const SQLReferencias =
+    "SELECT solicitudes.Numero_Solicitud as Id, solicitudes.Destinatarios_Id_Destinatario as IdDestinatario, solicitudes.Cantidad, referencias.Id_Referencia as IdRef, referencias.Referencia_Equipo as Referencia, referencias.Marca from solicitudes INNER join referencias on solicitudes.Id_Referencia = referencias.Id_Referencia ORDER BY IdDestinatario ASC";
+
+  db.query(SQLReferencias, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+      console.log("todo Ok");
+    }
+  });
+});
+
+app.get("/ReceiverInfo", (req, res) => {
+  const SQLReferencias = "SELECT * FROM `destinatarios`";
+
+  db.query(SQLReferencias, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+// -------------------------------------------------------------------------------------------------
+app.delete("/ser/:id", (req, res) => {
+  const SentID = req.params.id;
+
+  const SQL = "DELETE FROM `seriales` WHERE id_Serial = ?";
+
+  db.query(SQL, [SentID], (error, result) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      res.send(result);
     }
   });
 });

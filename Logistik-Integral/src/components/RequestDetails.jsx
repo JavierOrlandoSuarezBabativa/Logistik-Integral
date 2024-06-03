@@ -1,10 +1,19 @@
-import { useNavigate } from "react-router-dom"
-
 import '../styles/Solicitudes.css'
 
-export default function RequestDetails ({status, observations, date, request}) {
+import { useNavigate } from "react-router-dom"
+import { UserType } from "../App"
+import { useContext } from "react"
+
+import PropTypes from 'prop-types'
+
+
+export default function RequestDetails ({id, status, observations, date, request, setRequestId}) {
+
+    const {userType} = useContext(UserType)
 
     const navigateTo = useNavigate()
+
+    let dateFormat = date.slice(0, date.indexOf("T"));
 
     return(
         <>
@@ -23,7 +32,7 @@ export default function RequestDetails ({status, observations, date, request}) {
 
                 <div className="date-register register-container-item">
                     <h4>Fecha</h4>
-                    <p>{date}</p>
+                    <p>{dateFormat}</p>
                 </div>
 
                 <div className="id-register register-container-item">
@@ -32,11 +41,23 @@ export default function RequestDetails ({status, observations, date, request}) {
                 </div>
 
                 <div className="details-register register-container-item">
-                    <button onClick={() => navigateTo('/solicitudesButton')}>Gestionar</button>
+                    <button onClick={() => {
+                        setRequestId(id)
+                        navigateTo('/solicitudesButton')
+                        }}>{userType == 'Administrador' ? 'Detalles Solicitud' : 'Gestionar'}</button>
                 </div>
             </div>
         </div>
 
         </>
     )
+}
+
+RequestDetails.propTypes = {
+    id: PropTypes.number,
+    status: PropTypes.string,
+    observations: PropTypes.string,
+    date: PropTypes.string,
+    request: PropTypes.string,
+    setRequestId: PropTypes.func
 }

@@ -66,7 +66,7 @@
     grid-row: 3 / 4;
 }
 
-Link .details-register button {
+.details-register button {
     border: none;
     height: 35px;
     width: 70vw;

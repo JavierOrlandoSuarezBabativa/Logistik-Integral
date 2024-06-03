@@ -1,19 +1,27 @@
 import '../styles/Solicitudes.css'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import fetchRequestData from '../fetch/fetchRequestData.js'
 
 import RequestDetails from '../components/RequestDetails.jsx'
 
+import { RequestId } from '../App.jsx'
+
 export default function Solicitudes(){
 
     const [requestsData, setReferencesData] = useState()
+
+    const {setRequestId} = useContext(RequestId)
+
+
 
     useEffect(() => {
         fetchRequestData()
         .then(requestsResponse => setReferencesData(requestsResponse))
     }, [])
+
+
 
 
     return(
@@ -22,10 +30,12 @@ export default function Solicitudes(){
         {requestsData != undefined && requestsData.map(({status, observations, date, Id, request}) => {
             return <RequestDetails
                         key={Id}
+                        id={Id}
                         status={status}
                         observations={observations}
                         date={date}
                         request={request}
+                        setRequestId={setRequestId}
                                 />
         })}
         </>

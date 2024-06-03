@@ -22,6 +22,8 @@ export const Refs = React.createContext()
 
 export const Serials = React.createContext()
 
+export const RequestId = React.createContext()
+
 
 
 
@@ -34,6 +36,8 @@ export default function App(){
     const [singleRef, setSingleRef] = useState()
 
     const [serialRef, setSerialRef] = useState()
+
+    const [requestId, setRequestId] = useState()
 
 
 
@@ -72,7 +76,9 @@ export default function App(){
         },
         {
             path: '/solicitudes',
-            element: <div><UseSolicitudes ></UseSolicitudes></div>,
+            element: <RequestId.Provider value={{setRequestId}}>
+                        <div><UseSolicitudes ></UseSolicitudes></div>
+                    </RequestId.Provider>
         },
         {
             path: '/inventarios',
@@ -117,7 +123,11 @@ export default function App(){
         },
         {
             path: '/solicitudesButton',
-            element: <div><UseSolicitudesButton ></UseSolicitudesButton></div>
+            element: <>
+                    <RequestId.Provider value={{requestId}}>
+                        <UseSolicitudesButton ></UseSolicitudesButton>
+                    </RequestId.Provider>
+                    </>
         },
         {
             path: '/SolicitudesReceiverDetails',

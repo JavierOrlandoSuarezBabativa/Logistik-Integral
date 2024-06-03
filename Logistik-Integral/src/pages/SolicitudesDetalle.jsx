@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import '../styles/SolicitudesDetalle.css'
 
-export default function SolicitudesDetalle(){
+export default function SolicitudesDetalle({referencia, cantidad, marca}){
+
 
 return(
     <>
@@ -12,17 +13,16 @@ return(
           </div>
           <div>
             <h3>Referencia</h3>
-            <p id="reference-solicitute">Lorem ipsum dolor</p>
+            <p id="reference-solicitute">{referencia}</p>
           </div>
           <div>
             <h3>Cantidad</h3>
-            <p id="amount-solicitute">##</p>
+            <p id="amount-solicitute">{cantidad}</p>
           </div>
         </div>
           <div id="details-buttom">
-            <Link to={'/SolicitudesReceiverDetails'}>
-              <button className="details-destinatary">Detalles Destinatario</button>
-            </Link>
+              {/* <button className="details-destinatary">Detalles Destinatario</button> */}
+              <h3>{marca}</h3>
           </div>
         
       </div>
