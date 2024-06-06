@@ -76,15 +76,31 @@ app.post("/login", (req, res) => {
 
 // Crear nueva referencia (Rol Admin)
 app.post("/newReference", (req, res) => {
-  const sentModulo = req.body.newFamilia;
-  const sentNewReference = req.body.newReferencia;
-  const sentNewModelo = req.body.newModelo;
-  const sentNewMarca = req.body.newMarca;
-  const sentNewValor = req.body.newValor;
-  const sentNewCPU = req.body.newCPU;
-  const sentNewStorage = req.body.newStorage;
-  const sentNewDisplay = req.body.newDisplay;
-  const sentNewBateria = req.body.newBateria;
+  const sentFamila = req.body.familia;
+  const sentNewReference = req.body.referencia;
+  const sentNewModelo = req.body.modelo;
+  const sentNewMarca = req.body.marca;
+  const sentNewValor = req.body.valor;
+  const sentNewCPU = req.body.CPU;
+  const sentNewStorage = req.body.storage;
+  const sentNewDisplay = req.body.display;
+  const sentNewBateria = req.body.bateria;
+
+  let sentModulo;
+
+  switch (sentFamila) {
+    case "Laptop":
+      sentModulo = "1";
+      break;
+    case "Tablet":
+      sentModulo = "2";
+      break;
+    case "Smartphone":
+      sentModulo = "3";
+      break;
+    default:
+      break;
+  }
 
   const SQL3 =
     "INSERT INTO referencias (Modulos_Id_Modulo, Referencia_Equipo, Modelo, Marca, Valor, CPU, Storage, Pulgadas, Bateria) VALUES (?,?,?,?,?,?,?,?,?)";
@@ -114,11 +130,12 @@ app.post("/newReference", (req, res) => {
 app.post("/cantidad", (req, res) => {
   const sentRef = req.body.newRef;
   const sentCant = req.body.newCantidad;
+  const sentDate = req.body.newDate;
 
   const SQL4 =
-    "INSERT INTO equipos (Referencias_Id_Referencia, Cantidades) VALUES (?,?)";
+    "INSERT INTO equipos (Referencias_Id_Referencia, Cantidades, Fecha_Ingreso) VALUES (?,?,?)";
 
-  const Values4 = [sentRef, sentCant];
+  const Values4 = [sentRef, sentCant, sentDate];
 
   db.query(SQL4, Values4, (err, results) => {
     if (err) {
@@ -200,7 +217,7 @@ app.post("/detalles", (req, res) => {
 // Referencias y cantidades totales
 app.get("/", (req, res) => {
   const SQLReferencias =
-    "SELECT referencias.Modulos_Id_Modulo as Family, equipos.Referencias_Id_Referencia as Id_Ref, referencias.Referencia_Equipo as Ref, referencias.Marca, SUM(equipos.Cantidades) as Total FROM referencias INNER JOIN equipos on equipos.Referencias_Id_Referencia = referencias.Id_Referencia GROUP BY referencias.Referencia_Equipo;;";
+    "SELECT referencias.Modulos_Id_Modulo as Family, equipos.Referencias_Id_Referencia as Id_Ref, referencias.Referencia_Equipo as Ref, referencias.Marca, SUM(equipos.Cantidades) as Total FROM referencias INNER JOIN equipos on equipos.Referencias_Id_Referencia = referencias.Id_Referencia GROUP BY referencias.Referencia_Equipo";
 
   db.query(SQLReferencias, (error, result) => {
     if (error) {
@@ -272,7 +289,7 @@ app.get("/RequestsData", (req, res) => {
 // Solicitud individual
 app.get("/RequestInfo", (req, res) => {
   const SQLReferencias =
-    "SELECT solicitudes.Numero_Solicitud as Id, solicitudes.Destinatarios_Id_Destinatario as IdDestinatario, solicitudes.Cantidad, referencias.Id_Referencia as IdRef, referencias.Referencia_Equipo as Referencia, referencias.Marca from solicitudes INNER join referencias on solicitudes.Id_Referencia = referencias.Id_Referencia ORDER BY IdDestinatario ASC";
+    "SELECT solicitudes.Numero_Solicitud as Id, solicitudes.Destinatarios_Id_Destinatario as IdDestinatario, solicitudes.Cantidad, referencias.Id_Referencia as IdRef, referencias.Modulos_Id_Modulo as Familia , referencias.Referencia_Equipo as Referencia, referencias.Marca from solicitudes INNER join referencias on solicitudes.Id_Referencia = referencias.Id_Referencia ORDER BY IdDestinatario ASC";
 
   db.query(SQLReferencias, (error, result) => {
     if (error) {

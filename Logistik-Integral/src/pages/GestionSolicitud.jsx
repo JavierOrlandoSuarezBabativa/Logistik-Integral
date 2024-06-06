@@ -21,7 +21,6 @@ export default function GestionSolicitud(){
   const [serials, setSerials] = useState()
   const [showDetails, setShowDetails] = useState(false)
 
-
   useEffect(() => {
     fetchRequests()
     .then(res => setRequests(res))
@@ -59,7 +58,13 @@ export default function GestionSolicitud(){
                                                                             serials={serials}
                                                                           />
                                                                 })}
-      <button onClick={() => setShowDetails(true)}>Destinatario</button>
+      <button
+        onClick={() =>{
+          setShowDetails(true)
+                      }}
+        >Destinatario
+      </button>
+
       {showDetails && <ReceiverDetails
                         receiverId={receiverId}/>}
       </>

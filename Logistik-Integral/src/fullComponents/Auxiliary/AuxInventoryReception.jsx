@@ -3,9 +3,9 @@ import NewItemTitle from "../../pages/NewItemTitle.jsx"
 import References from "../../pages/References.jsx"
 import Axios from 'axios'
 import React, { useState, useEffect, useContext } from "react"
-import UseCreateNewMachine from "../../dinamicHooks/UseCreateNewMachine.jsx"
 import { Refs } from "../../App.jsx"
-
+import UseCreateNewMachine from "../../dinamicHooks/UseCreateNewMachine.jsx"
+// import fetchReferences from "../../fetch/fetchReferences.js"
 
 export const MachineFamily = React.createContext()
 
@@ -18,13 +18,9 @@ export default function AuxInventoryReception(){
 
     const {newReference, addNewReferences} = UseCreateNewMachine()
 
-    
     const referencesFiltered = referencesData.filter((ref) => {
         return ref.Modulos_Id_Modulo == machineFamily
     })
-
-
-
 
     async function fetchReferencias() {
         try{
@@ -35,38 +31,46 @@ export default function AuxInventoryReception(){
         }
     }
 
-
     useEffect(() => {
         fetchReferencias()
-    },[])
+    }, [])
+
 
 
 
     return(
         <MachineFamily.Provider value={{setMachineFamily, referencesFiltered}}>
 
-        <Header page='Recepcion de equipos'></Header>
+        <Header
+            page='Recepcion de equipos'
+        />
+
         <NewItemTitle
-            buttonSpecification='Guardar'
             newReference={newReference}
-            addNewReferences={addNewReferences}/>
-        {referencesFiltered.map(    ({
-                            Modulos_Id_Modulo,  
-                            Referencia_Equipo,
-                            Marca, 
-                            Modelo,
-                            Id_Referencia    }) => {
-                                              return  <References
-                                                        hash={Id_Referencia}
-                                                        referencesFiltered={referencesFiltered}
-                                                        key={Id_Referencia}
-                                                        modulo = {Modulos_Id_Modulo}
-                                                        referencia = {Referencia_Equipo}
-                                                        marca = {Marca}
-                                                        modelo = {Modelo}
-                                                        setSingleRef = {setSingleRef}
+            addNewReferences={addNewReferences}
+        />
+
+        {referencesFiltered.map(({
+                                    Valor,  
+                                    Referencia_Equipo,
+                                    Marca, 
+                                    Modelo,
+                                    Id_Referencia,
+                                    Storage,
+                                    Pulgadas
+                                }) => {
+                                        return  <References
+                                                hash={Id_Referencia}
+                                                storage={Storage}
+                                                pulgadas={Pulgadas}
+                                                key={Id_Referencia}
+                                                valor = {Valor}
+                                                referencia = {Referencia_Equipo}
+                                                marca = {Marca}
+                                                modelo = {Modelo}
+                                                setSingleRef = {setSingleRef}
                                                 />
-        })}
+                                        })}
 
         </MachineFamily.Provider>
     )

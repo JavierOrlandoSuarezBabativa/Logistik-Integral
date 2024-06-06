@@ -12,7 +12,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
     border-radius: 15px;
     margin: 15px auto;
     background: #fbfafa;
@@ -20,12 +19,30 @@
     width: 90vw;
 }
 
-.dropdown-moduleOptions select{
+.inventory-firstLine2 {
+    border-radius: 15px;
+    margin: 15px auto;
+    background: #fbfafa;
+    height: 70px;
+    width: 90vw;
+}
+
+.dropdown-module select{
     padding: 10px;
-    width: 120px;
+    width: 80vw;
     margin: auto 5px;
     border-radius: 10px;
     text-align: center;
+    font-size: 20px;
+}
+
+.dropdown-moduleOptions select{
+    padding: 10px;
+    width: 180px;
+    margin: auto 5px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 20px;
 }
 
 .item-button{

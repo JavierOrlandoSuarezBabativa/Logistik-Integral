@@ -5,57 +5,23 @@ import Axios from 'axios'
 
 export default function FirstLine({buttonSpecification, newReferenceInfo, addReferencesInfo, setNewReferenceInfo}){
 
-
-    let FAMILIA;
-    const REFERENCIA = newReferenceInfo.referencia
-    const MODELO = newReferenceInfo.modelo
-    const MARCA = newReferenceInfo.marca
-    const VALOR = newReferenceInfo.valor
-    const CPU = newReferenceInfo.CPU
-    const STORAGE = newReferenceInfo.storage
-    const DISPLAY = newReferenceInfo.display
-    const BATERIA = newReferenceInfo.bateria
-
-    switch (newReferenceInfo.familia) {
-        case 'Laptop':
-            FAMILIA = '1'
-            break
-        case 'Tablet':
-            FAMILIA = '2'
-            break
-        case 'Smartphone':
-            FAMILIA = '3'
-            break
-        default:
-            break
-    }
-
     const navigateTo = useNavigate()
 
     function createNewReference(){
-        Axios.post('http://localhost:3002/newReference', {
-            newFamilia: FAMILIA,
-            newReferencia: REFERENCIA,
-            newModelo: MODELO,
-            newMarca: MARCA,
-            newValor: VALOR,
-            newCPU: CPU,
-            newStorage: STORAGE,
-            newDisplay: DISPLAY,
-            newBateria: BATERIA,
-        }).then(
+        Axios.post('http://localhost:3002/newReference', newReferenceInfo)
+        .then(
             navigateTo('/createItem'),
             setNewReferenceInfo({
-                referencia: '',
-                marca: '',
-                valor: '',
-                CPU: '',
-                storage: '',
-                modelo: '',
-                display: '',
-                bateria: '',
-                familia: ''
-        })
+                                    referencia: '',
+                                    marca: '',
+                                    valor: '',
+                                    CPU: '',
+                                    storage: '',
+                                    modelo: '',
+                                    display: '',
+                                    bateria: '',
+                                    familia: ''
+                                })
         )
     }
 
@@ -80,12 +46,8 @@ export default function FirstLine({buttonSpecification, newReferenceInfo, addRef
                 </select>
             </div>
         </div>
-                    
-        
-
         </>
     )
-
 }
 
 FirstLine.propTypes = {
@@ -93,5 +55,5 @@ FirstLine.propTypes = {
     newReferenceInfo: PropTypes.object,
     addReferencesInfo: PropTypes.func,
     createNewReference: PropTypes.func,
-    // setNewReferenceInfo: PropTypes.func
+    setNewReferenceInfo: PropTypes.func
 }

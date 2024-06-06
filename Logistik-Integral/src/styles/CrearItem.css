@@ -15,17 +15,18 @@
 
 
 #solicitute-details-container h4{
-    font-size: 15px;
+    font-size: 16px;
     margin-left: 6px;
 }
 
 .inventory-details {
+    display: flex;
     border-radius: 5px;
-    width: 90%;
+    width: 85%;
     background: #5154a47c;
     padding: 10px;
     margin: 2px auto;
-    font-size: 13px;
+    font-size: 18px;
     overflow-wrap: break-word;
 }
 
