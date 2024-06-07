@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import fetchreceiverInfo from "../fetch/fetchReceiverInfo.js"
 
+import GuiasInput from "./GuiasInput.jsx"
+
 export default function ReceiverDetails ({receiverId}) {
 
     const [info, setInfo] = useState()
@@ -19,29 +21,36 @@ export default function ReceiverDetails ({receiverId}) {
             {singleInfo && <div id="solicitute-details-container">
                 <div>
                     <h4>Nombre</h4>
-                    <div name='nombre' className="data-details">{singleInfo[0].Nombres}</div>
+                    <div name='nombre' className="inventory-details">{singleInfo[0].Nombres}</div>
                 </div>
                 <div>
                     <h4>Apellido</h4>
-                    <div name='apellido' className="data-details">{singleInfo[0].Apellidos}</div>
+                    <div name='apellido' className="inventory-details">{singleInfo[0].Apellidos}</div>
                 </div>
                 <div>
                     <h4>Cedula</h4>
-                    <div name='cedula' className="data-details">{singleInfo[0].Cedula}</div>
+                    <div name='cedula' className="inventory-details">{singleInfo[0].Cedula}</div>
                 </div>
                 <div>
                     <h4>Telefono</h4>
-                    <div name='telefono' className="data-details">{singleInfo[0].Telefono}</div>
+                    <div name='telefono' className="inventory-details">{singleInfo[0].Telefono}</div>
                 </div>
                 <div>
                     <h4>Direccion</h4>
-                    <div name='direccion' className="data-details">{singleInfo[0].Direccion}</div>
+                    <div name='direccion' className="inventory-details">{singleInfo[0].Direccion}</div>
                 </div>
                 <div>
                     <h4>Ciudad</h4>
-                    <div name='ciudad' className="data-details">{singleInfo[0].Ciudad}</div>
+                    <div name='ciudad' className="inventory-details">{singleInfo[0].Ciudad}</div>
                 </div>
-            </div>}
+
+                <div className="#total-container">
+                <GuiasInput
+                    receiverId={receiverId}/>
+                </div>
+                    
+            </div>
+            }
         </>
     )
 }

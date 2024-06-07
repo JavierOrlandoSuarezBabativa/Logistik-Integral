@@ -21,7 +21,7 @@ export default function Solicitudes(){
         .then(requestsResponse => setReferencesData(requestsResponse))
     }, [])
 
-
+    console.log(requestsData)
 
 
     return(

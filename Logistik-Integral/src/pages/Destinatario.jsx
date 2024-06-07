@@ -1,12 +1,16 @@
 import '../styles/Destinatario.css'
-
-import PropTypes from 'prop-types'
-
-import UseAddDetails from '../dinamicHooks/UseAddDetails.jsx'
-
 import Axios from 'axios'
 
+import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
+import UseAddDetails from '../dinamicHooks/UseAddDetails.jsx'
+
+// import Observaciones from '../components/Observaciones.jsx'
+
+
 export default function Destinatario({requestRefs}){
+
+    const navigateTo = useNavigate()
 
     const {newDetailsInfo, addDetailsInfo} = UseAddDetails()
 
@@ -19,7 +23,9 @@ export default function Destinatario({requestRefs}){
 
     function createRequests(){
         Axios.post('http://localhost:3002/detalles', newDetailsInfo)
-        .then(createRequestInfo())
+        .then(
+                createRequestInfo(),
+                navigateTo('/cliente'))
       }
 
     return(
@@ -49,8 +55,20 @@ export default function Destinatario({requestRefs}){
                     <h4>Ciudad</h4>
                     <input name='ciudad' className="data-details" onChange={addDetailsInfo}/>
                 </div>
+                <div>
+                    <details>
+                        <summary>Observaciones</summary>
+                        <textarea name="observaciones" className="data-details" rows='5' onChange={addDetailsInfo}></textarea>
+                    </details>
+                </div>
             </div>
-            <button onClick={createRequests}>crear</button>
+            {/* <Observaciones/> */}
+            <button
+                style={{
+                        display: 'flex',
+                        margin: '0px auto'
+                        }}
+                onClick={createRequests}>Enviar Solicitud</button>
         </>
     )
 }

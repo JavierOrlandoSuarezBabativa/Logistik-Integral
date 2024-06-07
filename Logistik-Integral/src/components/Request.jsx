@@ -2,9 +2,10 @@ import PropTypes from 'prop-types'
 import Serials from "./Serials.jsx"
 import {useRef, useState } from 'react'
 
-export default function Request ({referencia, cantidad, serials, idRef}) {
+export default function Request ({referencia, cantidad, serials, idRef, marca}) {
   
   const [checkBoxStatus, setCheckBoxStatus] = useState(false)
+  const [showSerialsDiv, setShowSerialsDiv] = useState(true)
 
   let count = useRef(0)
   let serialsRef;
@@ -19,12 +20,14 @@ export default function Request ({referencia, cantidad, serials, idRef}) {
 
         <div className="solicitutes-grid">
           <div className='grid-item'>
-            {cantidad} - Cantidad
+          <h3>Cantidades <br />Solicitadas</h3>
+            {cantidad}
           </div>
 
           <div className='grid-item'>
             <h3>Referencia</h3>
             <p id="reference-solicitute">{referencia}</p>
+            <p>{marca}</p>
           </div>
           <div className='grid-item checkbox'>
             <h3>Estado</h3>
@@ -32,7 +35,7 @@ export default function Request ({referencia, cantidad, serials, idRef}) {
           </div>
 
           <div className='grid-item'>
-            {serialsRef != undefined && serialsRef.map(({
+            {serialsRef != undefined && showSerialsDiv ? serialsRef.map(({
                                                           id_Serial, 
                                                           Serial
                                                         }) => {
@@ -43,8 +46,11 @@ export default function Request ({referencia, cantidad, serials, idRef}) {
                                                                           setCheckBoxStatus={setCheckBoxStatus}
                                                                           cantidad={cantidad}
                                                                           count={count}
+                                                                          setShowSerialsDiv={setShowSerialsDiv}
+                                                                          referencia={referencia}
+                                                                          marca={marca}
                                                                         />
-            })}
+            }) : null}
           </div>
         </div>
       </div>

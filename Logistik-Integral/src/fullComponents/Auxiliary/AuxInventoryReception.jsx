@@ -69,6 +69,7 @@ export default function AuxInventoryReception(){
                                                 marca = {Marca}
                                                 modelo = {Modelo}
                                                 setSingleRef = {setSingleRef}
+                                                buttonDetail = {'Ingresar Unidades'}
                                                 />
                                         })}
 

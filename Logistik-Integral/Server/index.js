@@ -151,15 +151,12 @@ app.post("/solicitud", (req, res) => {
   const sentRef = req.body.id_Ref;
   const sentIdReceiver = req.body.idReceiver;
   const sentQuantity = req.body.quantity;
-  const sentStatus = "Pediente por revisar";
+  const sentStatus = "En proceso";
   const sentWorth = req.body.worth;
   const sentDate = req.body.fecha;
-  const sentProgress = "Pendiente por revisar";
-  const sentObservations = "Pendiente por revisar";
 
   const SQL =
-    "INSERT INTO solicitudes (Id_Referencia, Destinatarios_Id_Destinatario, Cantidad, Estado_Solicitud, Valor_Total, Fecha, Progreso, Observaciones) VALUES (?,?,?,?,?,?,?,?)";
-
+    "INSERT INTO solicitudes (Id_Referencia, Destinatarios_Id_Destinatario, Cantidad, Estado_Solicitud, Valor_Total, Fecha) VALUES (?,?,?,?,?,?)";
   const Values = [
     sentRef,
     sentIdReceiver,
@@ -167,8 +164,6 @@ app.post("/solicitud", (req, res) => {
     sentStatus,
     sentWorth,
     sentDate,
-    sentProgress,
-    sentObservations,
   ];
 
   db.query(SQL, Values, (err, results) => {
@@ -188,7 +183,9 @@ app.post("/detalles", (req, res) => {
   const sentAdress = req.body.direccion;
   const sentCity = req.body.ciudad;
   const sentNumber = req.body.telefono;
-  const ob = "Revisar despues Javier";
+  let sentObservation = req.body.observaciones;
+
+  if (sentObservation === null) sentObservation = "Sin observaciones";
 
   const SQL =
     "INSERT INTO destinatarios (Cedula, Nombres, Apellidos, Direccion, Ciudad, Telefono, Observaciones) VALUES (?,?,?,?,?,?,?)";
@@ -200,8 +197,28 @@ app.post("/detalles", (req, res) => {
     sentAdress,
     sentCity,
     sentNumber,
-    ob,
+    sentObservation,
   ];
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send({ message: "Ok" });
+    }
+  });
+});
+
+// Para registrar salidas
+app.post("/salidas", (req, res) => {
+  const SentBrand = req.body.brand;
+  const SentRef = req.body.ref;
+  const SentSerial = req.body.serial;
+  const SentDate = req.body.date;
+
+  const SQL = "INSERT INTO salidas (Brand, Ref, Serial, Date) VALUES (?,?,?,?)";
+
+  const Values = [SentBrand, SentRef, SentSerial, SentDate];
 
   db.query(SQL, Values, (err, results) => {
     if (err) {
@@ -274,7 +291,7 @@ app.get("/detailsId", (req, res) => {
 // Solicitudes del cliente
 app.get("/RequestsData", (req, res) => {
   const SQLReferencias =
-    "SELECT Destinatarios_Id_Destinatario as Id, GROUP_CONCAT(Numero_Solicitud) as request, SUM(Cantidad) as quantity, Fecha as date, Estado_Solicitud as status, Observaciones as observations from solicitudes GROUP by Destinatarios_Id_Destinatario;";
+    "SELECT Destinatarios_Id_Destinatario as Id, GROUP_CONCAT(Numero_Solicitud) as request, SUM(Cantidad) as quantity, Fecha as date, Estado_Solicitud as status, destinatarios.Observaciones as observations from solicitudes inner join destinatarios on solicitudes.Destinatarios_Id_Destinatario = destinatarios.Id_Destinatario GROUP by Destinatarios_Id_Destinatario;";
 
   db.query(SQLReferencias, (error, result) => {
     if (error) {
@@ -320,6 +337,38 @@ app.delete("/ser/:id", (req, res) => {
   const SQL = "DELETE FROM `seriales` WHERE id_Serial = ?";
 
   db.query(SQL, [SentID], (error, result) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.put("/ReceiverInfo/:id", (req, res) => {
+  const SentID = req.params.id;
+  const SentNumer = req.body.guia;
+
+  const SQL =
+    "UPDATE destinatarios set `Numero_Guia` = ? WHERE Id_Destinatario = ? ";
+
+  db.query(SQL, [SentNumer, SentID], (error, result) => {
+    if (error) {
+      return res.send(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.put("/RequestsData/:id", (req, res) => {
+  const SentID = req.params.id;
+  const status = "Gestionada con exito";
+
+  const SQL =
+    "UPDATE solicitudes set `Estado_Solicitud` = ? WHERE Destinatarios_Id_Destinatario = ? ";
+
+  db.query(SQL, [status, SentID], (error, result) => {
     if (error) {
       return res.send(error);
     } else {

@@ -1,18 +1,14 @@
 import '../styles/Solicitudes.css'
 import { useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
-export default function References({valor, referencia, marca, modelo, hash, setSingleRef,
-    pulgadas, storage, buttonDetail
-}){
+export default function References({valor, referencia, marca, modelo, hash, setSingleRef, pulgadas, storage, buttonDetail}){
 
     const navigateTo = useNavigate()
 
     function getRefID () {
         setSingleRef(hash)
     }
-
-
-    
 
     return(
         <>
@@ -51,4 +47,16 @@ export default function References({valor, referencia, marca, modelo, hash, setS
         </div>
         </>
     )
+}
+
+References.propTypes = {
+    valor: PropTypes.number,
+    referencia: PropTypes.string,
+    marca: PropTypes.string,
+    modelo: PropTypes.number,
+    hash: PropTypes.number,
+    setSingleRef: PropTypes.func,
+    pulgadas: PropTypes.string,
+    storage: PropTypes.string,
+    buttonDetail: PropTypes.string
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import UseRefSelect from "../dinamicHooks/UseRefSelect"
 import fetchRefQuantity from "../fetch/fetchRefQuantity.js"
+import getDate from "../Services/getDate.js"
 
 import RefSelect from "./RefSelect.jsx"
 
@@ -11,6 +12,7 @@ export default function Solicitud({requestRefs, setRequestRefs, detailsId}){
     const [quantitiesRef, setQuantitiesRef] = useState([])
     const [amount, setAmount] = useState(0)
     const [refId, setId] = useState()
+    const [ShowButton, setShowButton] = useState(true)
 
     const {refSelect, handleChange} = UseRefSelect()
  
@@ -61,16 +63,6 @@ export default function Solicitud({requestRefs, setRequestRefs, detailsId}){
         setAmount(prevAmount => prevAmount - 1)
     }
 
-    // usar getDate de Services
-    function getDate () {
-        const todayTime = Date.now();
-        const date = new Date(todayTime).toLocaleDateString();
-        let datePrevFormat = date;
-        const dateNewFormat = datePrevFormat.split('/').reverse().join('/')
-
-        return dateNewFormat
-    }
-
     function setRefData () {
         let newRefs = [...requestRefs, {
                                         id_Ref: refId,
@@ -80,32 +72,52 @@ export default function Solicitud({requestRefs, setRequestRefs, detailsId}){
                                         fecha: getDate(),
                                         }]
         setRequestRefs(newRefs)
+        setShowButton(false)
     }
 
 
     return(
         <>
-            <div id="order-register-container">
-                <div id="orders-grid">
-                    <div id="amount-div">
-                        <p id="amount-order">{amount}</p>
-                        <div id="counter">
+        <div id="order-register-container">
+
+            <div id="orders-grid">
+
+                <div className="amount-div">
+                    <p id="amount-order">{amount}</p>
+
+                    <div id="counter">
                         <button
-                            onClick={substractClick}>-</button>
+                            onClick={substractClick}
+                        >-</button>
                         <button
-                            onClick={addClick}>+</button>
-                        </div>
-                        <div>
-                            <b>{singleRefData != null ? singleRefData[4] : 0}</b> 
-                        </div>
-                        <div>
-                            <p>{refSelect}</p>
-                        </div>
+                            onClick={addClick}
+                        >+</button>
                     </div>
-                    <RefSelect refs={quantitiesRef} handleChange={handleChange}/>
                 </div>
+
+                <div className="amount-div">
+                    <b>{singleRefData != null ? singleRefData[4] - amount: 0}</b> 
+
+                    <div>
+                        <p>{singleRefData != null ? singleRefData[3] : ''}</p>
+                    </div>
+                </div>
+                    
+                <div className="amount-div">
+                    <RefSelect
+                        refs={quantitiesRef}
+                        handleChange={handleChange}
+                    />
+                </div>
+
             </div>
-            <button onClick={setRefData}>Confirmar</button>
+        </div>
+
+        {ShowButton && <button
+                            style={{display: 'flex',
+                                        margin: '0px auto'}}
+                            onClick={setRefData}
+                        >Guardar</button>}
         </>
     )
 

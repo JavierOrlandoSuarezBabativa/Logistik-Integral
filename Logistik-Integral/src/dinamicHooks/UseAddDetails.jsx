@@ -10,6 +10,7 @@ export default function UseAddDetails () {
         telefono: '',
         direccion: '',
         ciudad: '',
+        observaciones: ''
     })
 
     function addDetailsInfo (event) {

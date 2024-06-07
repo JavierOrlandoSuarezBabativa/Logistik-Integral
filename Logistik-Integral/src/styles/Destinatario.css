@@ -2,14 +2,14 @@
     position: relative;
     height: fit-content;
     width: 90vw;
-    padding: 5px;
+    padding: 55px;
     border-radius: 15px;
     background: #fbfafa;
     margin: 10px auto;
 }
 
 #solicitute-details-container div {
-    width: 100%;
+    width: 90%;
     margin: 25px auto;
 }
 

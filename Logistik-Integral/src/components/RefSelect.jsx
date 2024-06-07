@@ -6,10 +6,13 @@ return(
     <div id="reference-item">
         <select 
             className="dropdown-module"
-            onChange={handleChange}
-            >
+            onChange={handleChange}>
                 <option value="">Selecciona Referencia</option>
-                {refs.map((singleRef, index) => <option name={singleRef.Ref} value={singleRef.Ref} key={index}>{singleRef.Ref}</option>)}
+                {refs.map((singleRef, index) => <option
+                                                    name={singleRef.Ref}
+                                                    value={singleRef.Ref} 
+                                                    key={index}>{singleRef.Ref}
+                                                    </option>)}
         </select>
     </div>
     )

@@ -4,16 +4,18 @@ import RequestButtons from "../../components/RequestButtons.jsx"
 import Destinatario from "../../pages/Destinatario.jsx"
 
 import {useEffect, useState } from "react"
-import UseGetRequestRefs from "../../dinamicHooks/UseGetRequestRefs.jsx"
+// import UseGetRequestRefs from "../../dinamicHooks/UseGetRequestRefs.jsx"
 
 import fetchDetailsId from "../../fetch/fetchDetailsId.js"
 
 export default function ClientCreateRequest(){
 
-    const {requestRefs, setRequestRefs} = UseGetRequestRefs()
-
+    // const {requestRefs, setRequestRefs} = UseGetRequestRefs()
+    const [requestRefs, setRequestRefs] = useState([])
     const [addRef, setAddRef] = useState([])
     const [detailsId, setDetailsId] = useState()
+    const [showAddReference, setAddReference] = useState(true)
+    const [showReceiverDetails, setShowReceiverDetails] = useState(false)
 
     useEffect(() => {
         fetchDetailsId()
@@ -30,10 +32,14 @@ export default function ClientCreateRequest(){
                         setRequestRefs={setRequestRefs}
                         detailsId={detailsId}/>
         })}
-        <RequestButtons
-            setAddRef={setAddRef}
-            addRef={addRef}/>
-        <Destinatario requestRefs={requestRefs}/>
+        {showAddReference && <RequestButtons
+                                setAddRef={setAddRef}
+                                addRef={addRef}
+                                setShowReceiverDetails={setShowReceiverDetails}
+                                setAddReference={setAddReference}
+                            />}
+
+        {showReceiverDetails && <Destinatario requestRefs={requestRefs}/>}
         </>
     )
 }
