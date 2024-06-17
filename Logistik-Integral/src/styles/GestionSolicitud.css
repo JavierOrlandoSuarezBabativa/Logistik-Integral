@@ -1,4 +1,7 @@
 .solicitute-register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: fit-content;
     width: 90vw;
     padding: 5px;
@@ -10,12 +13,16 @@
 
 .solicitutes-grid {
     display: grid;
-    grid-template-columns: 30% 40% 30%;
+    grid-template-columns: 35% 40% 25%;
     grid-template-rows: repeat(2, fit-content);
     margin-top: 5px;
-    width: 90vw;
-    border: #e94242 solid 1px;
+    width: 85vw;
+    border: #1b1d93 solid 1px;
     border-radius: 10px;
+}
+
+.grid-item h3 {
+    text-align: center;
 }
 
 .grid-item:nth-child(4){
@@ -30,13 +37,13 @@
     text-align: center;
 }
 
-.grid-item:nth-child(4) input {
+/* .grid-item:nth-child(4) input {
     width: 60%;
     padding: 5px;
     border-radius: 10px;
     margin-bottom: 5px;
-}
-
+} */
+/* 
 .grid-item:nth-child(4) button{
     position: absolute;    
     background-color: #2a25b4;
@@ -46,11 +53,12 @@
     top: 24px;
     width: 30px;
     border-radius: 50%;
-}
+} */
 
 .solicitutes-grid div {
     position: relative;
     text-align: center;
+    font-weight: 450;
 }
 
 .checkbox {

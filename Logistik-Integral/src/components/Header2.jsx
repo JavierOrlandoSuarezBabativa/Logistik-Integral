@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { UserType } from "../App";
 import { useContext } from "react";
 
-export default function Header(props) {
+export default function Header() {
   const { userType } = useContext(UserType);
 
   let userMenu;
@@ -25,25 +25,14 @@ export default function Header(props) {
       <div id="header">
         <div id="icons-container">
           <div>
-            {props.firstUI ? (
-              <Link to={"/"}>
-                <i className="material-icons left">logout</i>
-              </Link>
-            ) : (
-              <Link to={userMenu}>
-                <i className="material-icons left">arrow_back</i>
-              </Link>
-            )}
+            <Link to={userMenu}>
+              <i className="material-icons left">arrow_back</i>
+            </Link>
           </div>
           <div>
-            <h2>{props.user || props.page}</h2>
-          </div>
-          <div>
-            {props.firstUI ? null : (
-              <Link to={"/"}>
-                <i className="material-icons right">logout</i>
-              </Link>
-            )}
+            <Link to={"/"}>
+              <i className="material-icons right">logout</i>
+            </Link>
           </div>
         </div>
       </div>

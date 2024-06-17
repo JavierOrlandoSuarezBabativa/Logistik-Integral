@@ -11,14 +11,14 @@ const db = mysql.createConnection({
   user: "root",
   host: "localhost",
   password: "",
-  database: "logistik",
+  database: "mydb",
 });
 
 app.listen(3002, () => {
   console.log("Server is running 3002");
 });
 
-// Registro de nuevos usuarios
+// Registro de nuevos usuarios OK!
 app.post("/registro", (req, res) => {
   const sentUsername = req.body.UserName;
   const sentUserLastName = req.body.UserLastName;
@@ -45,7 +45,6 @@ app.post("/registro", (req, res) => {
     if (err) {
       res.send(err);
     } else {
-      console.log("User inserted successfully");
       res.send({ message: "User added!!" });
     }
   });
@@ -185,7 +184,7 @@ app.post("/detalles", (req, res) => {
   const sentNumber = req.body.telefono;
   let sentObservation = req.body.observaciones;
 
-  if (sentObservation === null) sentObservation = "Sin observaciones";
+  if (sentObservation === "") sentObservation = "Sin observaciones";
 
   const SQL =
     "INSERT INTO destinatarios (Cedula, Nombres, Apellidos, Direccion, Ciudad, Telefono, Observaciones) VALUES (?,?,?,?,?,?,?)";
@@ -234,7 +233,7 @@ app.post("/salidas", (req, res) => {
 // Referencias y cantidades totales
 app.get("/", (req, res) => {
   const SQLReferencias =
-    "SELECT referencias.Modulos_Id_Modulo as Family, equipos.Referencias_Id_Referencia as Id_Ref, referencias.Referencia_Equipo as Ref, referencias.Marca, SUM(equipos.Cantidades) as Total FROM referencias INNER JOIN equipos on equipos.Referencias_Id_Referencia = referencias.Id_Referencia GROUP BY referencias.Referencia_Equipo";
+    "SELECT referencias.Modulos_Id_Modulo as Family, referencias.Id_Referencia as Id_Ref, referencias.Referencia_Equipo as Ref, referencias.Marca, count(seriales.id_Serial) as Total FROM referencias inner join seriales on referencias.Id_Referencia = seriales.id_Ref GROUP BY referencias.Referencia_Equipo";
 
   db.query(SQLReferencias, (error, result) => {
     if (error) {
@@ -330,6 +329,25 @@ app.get("/ReceiverInfo", (req, res) => {
   });
 });
 
+app.get("/Registros/:firstDate/:secondDate", (req, res) => {
+  const SentStartDate = req.params.firstDate;
+  const SentFinishDate = req.params.secondDate;
+  const gestion = "Gestionada con exito";
+  const SQLReferencias = `SELECT referencias.Marca, solicitudes.Id_Referencia as Id_Ref, solicitudes.Cantidad, referencias.Referencia_Equipo as Referencia, solicitudes.Fecha, destinatarios.Numero_Guia, solicitudes.Fecha_Envio from solicitudes inner join destinatarios on solicitudes.Destinatarios_Id_Destinatario = destinatarios.Id_Destinatario INNER join referencias on solicitudes.Id_Referencia = referencias.Id_Referencia where solicitudes.Estado_Solicitud = ? and solicitudes.Fecha_Envio BETWEEN ? and ?`;
+
+  db.query(
+    SQLReferencias,
+    [gestion, SentStartDate, SentFinishDate],
+    (error, result) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
 // -------------------------------------------------------------------------------------------------
 app.delete("/ser/:id", (req, res) => {
   const SentID = req.params.id;
@@ -363,12 +381,13 @@ app.put("/ReceiverInfo/:id", (req, res) => {
 
 app.put("/RequestsData/:id", (req, res) => {
   const SentID = req.params.id;
+  const SentDate = req.body.date;
   const status = "Gestionada con exito";
 
   const SQL =
-    "UPDATE solicitudes set `Estado_Solicitud` = ? WHERE Destinatarios_Id_Destinatario = ? ";
+    "UPDATE solicitudes set `Estado_Solicitud` = ?, `Fecha_Envio` = ? WHERE Destinatarios_Id_Destinatario = ? ";
 
-  db.query(SQL, [status, SentID], (error, result) => {
+  db.query(SQL, [status, SentDate, SentID], (error, result) => {
     if (error) {
       return res.send(error);
     } else {

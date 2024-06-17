@@ -1,14 +1,9 @@
-import SingleRef from "../../pages/SingleRef"
-import Header from "../../components/Header"
+import SingleRef from "../../pages/SingleRef";
 
-export default function AuxSendRef () {
-
-    return(
-        <>
-        <Header page='Seriales'/>
-        <SingleRef
-                 />
-        </>
-        
-    )
+export default function AuxSendRef() {
+  return (
+    <>
+      <SingleRef />
+    </>
+  );
 }

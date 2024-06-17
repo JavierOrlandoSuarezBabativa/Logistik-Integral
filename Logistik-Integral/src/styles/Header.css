@@ -1,32 +1,32 @@
 #header {
     background:  rgb(49, 68, 213);
     width: 100vw;
-    height: 50px;
+    height: fit-content;
     text-align: center;
 }
 
 
 #icons-container {
-    position: relative;
     display: flex;
     padding: 3px;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #icons-container div h2 { 
     margin-top: 5px;
-    font-size: 28px;
+    font-size: 30px;
+    text-wrap: wrap;
+    min-width: fit-content;
 }
 
 
 .left{
-    position: absolute;
     font-size: 45px;
     left: 0px;
 }
 
 .right{
-    position: absolute;
     font-size: 45px;
     right: 0px;
 }

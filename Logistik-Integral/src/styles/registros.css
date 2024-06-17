@@ -1,0 +1,82 @@
+#register-container {
+    width: 90vw;
+    height: fit-content;
+    padding: 5px;
+    border-radius: 15px;
+    background: #fbfafa;
+    margin: 20px auto;
+}
+
+#date-input {
+    width: 45%;
+    height: fit-content;
+}
+
+#select-container{
+    display: flex;
+    align-items: center;
+}
+
+select{
+    padding: 10px;
+    width: 80vw;
+    margin: 5px auto;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+
+
+#table-container {
+    width: 90vw;
+    height: fit-content;
+    padding: 5px;
+    border-radius: 15px;
+    background: #fbfafa;
+    margin: 20px auto;
+    border-inline: 1px solid #000;
+    border-inline-start-width: 2px;
+    border-inline-end-width: 2px;
+    background: #5154a47c;
+}
+
+#table-container th{
+    /* border: 1px solid #000; */
+    padding: 5px;
+    border-bottom: 1px solid #000;
+    border-bottom-width: 2px;
+}
+
+#marca {
+    width: 10vw;
+    font-size: 15px;
+}
+
+#ref {
+    width: 9vw;
+    font-size: 15px;
+}
+
+#unidades {
+    width: 5vw;
+    font-size: 15px;
+}
+
+#fecha {
+    width: 26vw;
+    font-size: 15px;
+}
+
+#guia {
+    width: 25vw;
+    font-size: 15px;
+}
+
+#table-container td {
+    text-align: center;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+}
