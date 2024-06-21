@@ -10,7 +10,7 @@
 
 .solicitutes-grid {
     display: grid;
-    grid-template-columns: 30% 40% 30%;
+    grid-template-columns: 20% 60% 20%;
     grid-template-rows: 80px;
     margin-top: 5px;
     width: 90vw;
@@ -20,6 +20,7 @@
 
 .solicitutes-grid div {
     position: relative;
+    border: #000 solid 1px;
 }
 
 .solicitutes-grid div h3 {
@@ -27,6 +28,7 @@
     display: flex;
     justify-content: center;
     margin-top: 10px ;
+    align-items: center;
 }
 
 .solicitutes-grid div i {
@@ -34,15 +36,16 @@
     top: 50%;
     left: 49%;
     margin: -25px 0 0 -25px;
-    font-size: 55px;
+    font-size: 50px;
+    text-align: center;
 }
 
 .solicitutes-grid div i span {
     display: block;
     position: absolute;
     border: #000 solid 1px;
-    width: 65px;
-    height: 65px;
+    width: 70px;
+    height:70px;
     border-radius: 50%;
     top: 50%;
     left: 49%;
@@ -51,12 +54,12 @@
 
 
 #amount-solicitute {
-    font-size: 35px;
+    font-size: 2rem;
     text-align: center;
 }
 
 #reference-solicitute {
-    font-size: 18px;
+    font-size: 2rem;
     text-align: center;
     margin-top: 15px;
 }
@@ -66,7 +69,7 @@
 }
 
 #brand h2 {
-    margin: 5px auto;
+    margin: 0px auto;
 }
 
 .details-destinatary {

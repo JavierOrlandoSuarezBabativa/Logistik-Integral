@@ -1,5 +1,6 @@
-import { lazy } from "react";
-import React, { useState } from "react";
+import React, { lazy, useState } from "react";
+import { createBrowserRouter } from "react-router-dom";
+import AuthGuard from "../ProtectedRoutes/ProptectedRoutes.jsx";
 
 import {
   UseSolicitudes,
@@ -9,17 +10,22 @@ import {
   UseInventoryDetails,
 } from "../UseSolicitudes.jsx";
 
-import { createBrowserRouter } from "react-router-dom";
 import FrontPage from "../pages/FrontPage.jsx";
-import SignUp from "../pages/SignUp.jsx";
-import Menu from "../pages/Menu.jsx";
 import AuxInventoryReception from "../fullComponents/Auxiliary/AuxInventoryReception.jsx";
-import AuxSendRef from "../fullComponents/Auxiliary/AuxSendRef.jsx";
-import AdminCreateRef from "../fullComponents/Admin/AdminCreateRef.jsx";
-import CreateSolicitute from "../fullComponents/Client/CreateSolicitute.jsx";
 import Registers from "../pages/Registers.jsx";
+import AuxSendRef from "../fullComponents/Auxiliary/AuxSendRef.jsx";
 
-import Header2 from "../components/Header2.jsx";
+const Menu = lazy(() => import("../pages/Menu.jsx"));
+const SignUp = lazy(() => import("../pages/SignUp.jsx"));
+const Header2 = lazy(() => import("../components/Header2.jsx"));
+
+const AdminCreateRef = lazy(() => {
+  return import("../fullComponents/Admin/AdminCreateRef.jsx");
+});
+
+const CreateSolicitute = lazy(() => {
+  return import("../fullComponents/Client/CreateSolicitute.jsx");
+});
 
 export const RequestId = React.createContext();
 export const Serials = React.createContext();
@@ -42,230 +48,137 @@ export default function RenderRoutes() {
     },
     {
       element: <Header2 />,
+      AuthGuard: lazy(() => import("../ProtectedRoutes/ProptectedRoutes.jsx")),
       children: [
         {
           path: "/administrador",
           element: (
-            <div>
+            <AuthGuard>
               <Menu solicitute="Solicitudes" inventory="Inventario"></Menu>
-            </div>
+            </AuthGuard>
           ),
         },
         {
           path: "/auxiliar",
           element: (
-            <div>
+            <AuthGuard>
               <Menu
                 solicitute="Solicitudes Pendientes"
                 inventory="Inventario Almacen"
               ></Menu>
-            </div>
+            </AuthGuard>
           ),
         },
         {
           path: "/cliente",
           element: (
-            <div>
+            <AuthGuard>
               <Menu
                 solicitute="Hacer Solicitud"
                 inventory="Inventario Disponible"
                 registration="Inhabilitado En Desarrollo"
               ></Menu>
-            </div>
+            </AuthGuard>
           ),
         },
         {
           path: "/solicitudes",
           element: (
-            <RequestId.Provider value={{ setRequestId }}>
-              <div>
-                <UseSolicitudes></UseSolicitudes>
-              </div>
-            </RequestId.Provider>
+            <AuthGuard>
+              <RequestId.Provider value={{ setRequestId }}>
+                <div>
+                  <UseSolicitudes></UseSolicitudes>
+                </div>
+              </RequestId.Provider>
+            </AuthGuard>
           ),
         },
         {
           path: "/inventarios",
           element: (
-            <>
+            <AuthGuard>
               <Serials.Provider value={{ setSerialRef }}>
                 <UseInventory></UseInventory>
               </Serials.Provider>
-            </>
+            </AuthGuard>
           ),
         },
         {
           path: "/inventoryDetails",
           element: (
-            <>
+            <AuthGuard>
               <Serials.Provider value={{ serialRef }}>
                 <UseInventoryDetails />
               </Serials.Provider>
-            </>
+            </AuthGuard>
           ),
         },
         {
           path: "/reception",
           element: (
-            <>
+            <AuthGuard>
               <Refs.Provider
                 value={{ referencesData, setReferencesData, setSingleRef }}
               >
                 <AuxInventoryReception />
               </Refs.Provider>
-            </>
+            </AuthGuard>
           ),
         },
         {
           path: "/id",
           element: (
-            <>
+            <AuthGuard>
               <Refs.Provider value={{ referencesData, singleRef }}>
                 <AuxSendRef />
               </Refs.Provider>
-            </>
+            </AuthGuard>
           ),
         },
         {
           path: "/createItem",
-          element: <AdminCreateRef />,
+          element: (
+            <AuthGuard>
+              <AdminCreateRef />,
+            </AuthGuard>
+          ),
         },
         {
           path: "/newSolicitute",
-          element: <CreateSolicitute />,
+          element: (
+            <AuthGuard>
+              <CreateSolicitute />,
+            </AuthGuard>
+          ),
         },
         {
           path: "/solicitudesButton",
           element: (
-            <>
+            <AuthGuard>
               <RequestId.Provider value={{ requestId }}>
                 <UseSolicitudesButton />
               </RequestId.Provider>
-            </>
+            </AuthGuard>
           ),
         },
         {
           path: "/SolicitudesReceiverDetails",
-          element: <UseSolicitudesReceiverDetailsButton />,
+          element: (
+            <AuthGuard>
+              <UseSolicitudesReceiverDetailsButton />,
+            </AuthGuard>
+          ),
         },
         {
           path: "/registros",
-          element: <Registers />,
+          element: (
+            <AuthGuard>
+              <Registers />,
+            </AuthGuard>
+          ),
         },
       ],
     },
-    // {
-    //   path: "/administrador",
-    //   element: (
-    //     <div>
-    //       <Header user="Administrador" firstUI={true} />
-    //       <Menu solicitute="Solicitudes" inventory="Inventario"></Menu>
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   path: "/auxiliar",
-    //   element: (
-    //     <div>
-    //       <Header user="Auxiliar" firstUI={true} />
-    //       <Menu
-    //         solicitute="Solicitudes Pendientes"
-    //         inventory="Inventario Almacen"
-    //       ></Menu>
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   path: "/cliente",
-    //   element: (
-    //     <div>
-    //       <Header user="Cliente" firstUI={true} />
-    //       <Menu
-    //         solicitute="Hacer Solicitud"
-    //         inventory="Inventario Disponible"
-    //         registration="Inhabilitado En Desarrollo"
-    //       ></Menu>
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   path: "/solicitudes",
-    //   element: (
-    //     <RequestId.Provider value={{ setRequestId }}>
-    //       <div>
-    //         <UseSolicitudes></UseSolicitudes>
-    //       </div>
-    //     </RequestId.Provider>
-    //   ),
-    // },
-    // {
-    //   path: "/inventarios",
-    //   element: (
-    //     <>
-    //       <Serials.Provider value={{ setSerialRef }}>
-    //         <UseInventory></UseInventory>
-    //       </Serials.Provider>
-    //     </>
-    //   ),
-    // },
-    // {
-    //   path: "/inventoryDetails",
-    //   element: (
-    //     <>
-    //       <Serials.Provider value={{ serialRef }}>
-    //         <UseInventoryDetails />
-    //       </Serials.Provider>
-    //     </>
-    //   ),
-    // },
-    // {
-    //   path: "/reception",
-    //   element: (
-    //     <>
-    //       <Refs.Provider
-    //         value={{ referencesData, setReferencesData, setSingleRef }}
-    //       >
-    //         <AuxInventoryReception />
-    //       </Refs.Provider>
-    //     </>
-    //   ),
-    // },
-    // {
-    //   path: "/id",
-    //   element: (
-    //     <>
-    //       <Refs.Provider value={{ referencesData, singleRef }}>
-    //         <AuxSendRef />
-    //       </Refs.Provider>
-    //     </>
-    //   ),
-    // },
-    // {
-    //   path: "/createItem",
-    //   element: <AdminCreateRef />,
-    // },
-    // {
-    //   path: "/newSolicitute",
-    //   element: <CreateSolicitute />,
-    // },
-    // {
-    //   path: "/solicitudesButton",
-    //   element: (
-    //     <>
-    //       <RequestId.Provider value={{ requestId }}>
-    //         <UseSolicitudesButton />
-    //       </RequestId.Provider>
-    //     </>
-    //   ),
-    // },
-    // {
-    //   path: "/SolicitudesReceiverDetails",
-    //   element: <UseSolicitudesReceiverDetailsButton />,
-    // },
-    // {
-    //   path: "/registros",
-    //   element: <Registers />,
-    // },
   ]);
 
   return { router };

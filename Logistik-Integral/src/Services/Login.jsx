@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -14,7 +13,8 @@ export default function Login() {
     });
   }
 
-  function switchUserType(response, setUserType) {
+  function switchUserType(response, setUserType, setIsActive) {
+    setIsActive(true);
     switch (response.data[0].Cargo) {
       case "Administrador":
         setUserType("Administrador");

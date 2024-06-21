@@ -1,15 +1,14 @@
 #register-container {
+    display: flex;
+    flex-direction: column;
     width: 90vw;
     height: fit-content;
     padding: 5px;
     border-radius: 15px;
     background: #fbfafa;
     margin: 20px auto;
-}
-
-#date-input {
-    width: 45%;
-    height: fit-content;
+    justify-content: center;
+    align-items: center;
 }
 
 #select-container{
@@ -28,7 +27,7 @@ select{
 
 
 #table-container {
-    width: 90vw;
+    width: 90%;
     height: fit-content;
     padding: 5px;
     border-radius: 15px;
@@ -40,6 +39,10 @@ select{
     background: #5154a47c;
 }
 
+#table-container table {
+    width: 100%;
+}
+
 #table-container th{
     /* border: 1px solid #000; */
     padding: 5px;
@@ -48,35 +51,80 @@ select{
 }
 
 #marca {
-    width: 10vw;
-    font-size: 15px;
+    width: 10%;
+    font-size: 12px;
 }
 
 #ref {
-    width: 9vw;
-    font-size: 15px;
+    width: 9%;
+    font-size: 12px;
 }
 
 #unidades {
-    width: 5vw;
-    font-size: 15px;
+    width: 5%;
+    font-size: 12px;
 }
 
 #fecha {
-    width: 26vw;
-    font-size: 15px;
+    width: 26%;
+    font-size: 12px;
 }
 
 #guia {
-    width: 25vw;
-    font-size: 15px;
+    width: 25%;
+    font-size: 12px;
 }
 
 #table-container td {
     text-align: center;
-    font-size: 13px;
+    font-size: 10px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 
 }
+
+#CSVlink-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+}
+
+.date-div {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.date-div label {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+input[type=date] {
+    height: fit-content;
+    margin: 0 auto;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 10px;
+    padding: 5px;
+    color: #fff;
+  }
+  input[type=date]::-webkit-datetime-edit-month-field {
+    color: red;
+  }
+  input[type=date]::-webkit-datetime-edit-day-field {
+    color: white;
+  }
+  input[type=date]::-webkit-datetime-edit-year-field {
+    color: blue;
+  }
+  input[type=date]::-webkit-calendar-picker-indicator {
+    font-size: 28px;
+  }
+  input[type=date]::-webkit-calendar-picker-indicator:active {
+    color: blue;
+  }

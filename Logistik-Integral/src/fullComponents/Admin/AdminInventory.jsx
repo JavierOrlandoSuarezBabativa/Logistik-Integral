@@ -15,10 +15,11 @@ export default function AdminInventory() {
   return (
     <>
       <ButtonReception value="Crear Item"></ButtonReception>
-      {quantities.map(({ Family, Ref, Marca, Total }) => {
+      {quantities.map(({ Family, Ref, Marca, Total, Id_Ref }) => {
         return (
           <Inventarios
             key={Ref}
+            Id_Ref={Id_Ref}
             Family={Family}
             Ref={Ref}
             Marca={Marca}

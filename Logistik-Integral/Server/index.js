@@ -244,6 +244,20 @@ app.get("/", (req, res) => {
   });
 });
 
+// Solicitude por referencia
+app.get("/refQuntity", (req, res) => {
+  const SQLReferencias =
+    "SELECT solicitudes.Id_Referencia as ref, sum(solicitudes.Cantidad) as total FROM `solicitudes` WHERE solicitudes.Estado_Solicitud = 'En proceso' GROUP by solicitudes.Id_Referencia";
+
+  db.query(SQLReferencias, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 // Seriales totales
 app.get("/seriales", (req, res) => {
   const SQL = "SELECT * FROM `seriales`";

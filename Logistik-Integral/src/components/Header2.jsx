@@ -4,7 +4,7 @@ import { UserType } from "../App";
 import { useContext } from "react";
 
 export default function Header() {
-  const { userType } = useContext(UserType);
+  const { userType, setIsActive } = useContext(UserType);
 
   let userMenu;
 
@@ -31,7 +31,12 @@ export default function Header() {
           </div>
           <div>
             <Link to={"/"}>
-              <i className="material-icons right">logout</i>
+              <i
+                onClick={() => setIsActive(false)}
+                className="material-icons right"
+              >
+                logout
+              </i>
             </Link>
           </div>
         </div>

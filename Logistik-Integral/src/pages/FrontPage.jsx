@@ -14,7 +14,7 @@ function FrontPage() {
   const { error, switchUserType } = Login();
 
   const { userInfo, checkUserInfo, setUserInfo } = Uselogin();
-  const { setUserType } = useContext(UserType);
+  const { setUserType, setIsActive } = useContext(UserType);
 
   const [loginStatus, setLoginStatus] = useState("");
   const [statusHolder, setStatusHolder] = useState("message");
@@ -35,7 +35,7 @@ function FrontPage() {
       if (response.data.message) {
         error(response, setLoginStatus, setUserInfo);
       } else {
-        switchUserType(response, setUserType);
+        switchUserType(response, setUserType, setIsActive);
       }
     });
   }
