@@ -9,24 +9,14 @@ export default function FirstLine({
   buttonSpecification,
   newReferenceInfo,
   addReferencesInfo,
-  setNewReferenceInfo,
+  setEmptyObject,
 }) {
   const navigateTo = useNavigate();
 
   function createNewReference() {
     Axios.post("http://localhost:3002/newReference", newReferenceInfo).then(
       navigateTo("/createItem"),
-      setNewReferenceInfo({
-        referencia: "",
-        marca: "",
-        valor: "",
-        CPU: "",
-        storage: "",
-        modelo: "",
-        display: "",
-        bateria: "",
-        familia: "",
-      })
+      setEmptyObject()
     );
   }
 
@@ -61,4 +51,5 @@ FirstLine.propTypes = {
   addReferencesInfo: PropTypes.func,
   createNewReference: PropTypes.func,
   setNewReferenceInfo: PropTypes.func,
+  setEmptyObject: PropTypes.func,
 };

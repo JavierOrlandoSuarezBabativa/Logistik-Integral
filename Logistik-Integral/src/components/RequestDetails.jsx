@@ -1,5 +1,7 @@
 import "../styles/Solicitudes.css";
 
+import checkDate from "../Services/checkDate.js";
+
 import { useNavigate } from "react-router-dom";
 import { UserType } from "../App";
 import { useContext } from "react";
@@ -11,7 +13,7 @@ export default function RequestDetails({
   status,
   observations,
   date,
-  request,
+  quantity,
   setRequestId,
 }) {
   const { userType } = useContext(UserType);
@@ -20,10 +22,16 @@ export default function RequestDetails({
 
   let dateFormat = date.slice(0, date.indexOf("T"));
 
+  let daysGOne = checkDate(dateFormat);
+
   return (
     <>
       <div className="solicitutes-container">
-        <div className="register-container">
+        <div
+          className={
+            daysGOne <= 15 ? "register-container" : "register-container-alert"
+          }
+        >
           <div className="estatus-register register-container-item">
             <h4>Estado</h4>
             <p>{status}</p>
@@ -31,6 +39,9 @@ export default function RequestDetails({
 
           <div className="observations-register register-container-item">
             <h4>Observaciones</h4>
+            {status === "Gestionada con exito" ? (
+              <i className="material-icons delete-can">delete</i>
+            ) : null}
             <p id="observaciones">{observations}</p>
           </div>
 
@@ -40,13 +51,13 @@ export default function RequestDetails({
           </div>
 
           <div className="id-register register-container-item">
-            <h4>Solicitud</h4>
-            <p>{request}</p>
+            <h4>Cantidad</h4>
+            <p>{quantity}</p>
           </div>
 
           <div className="details-register register-container-item">
             {status === "Gestionada con exito" ? (
-              "👍🆗"
+              <i className="material-icons verified-icon">verified</i>
             ) : (
               <button
                 onClick={() => {
@@ -71,6 +82,6 @@ RequestDetails.propTypes = {
   status: PropTypes.string,
   observations: PropTypes.string,
   date: PropTypes.string,
-  request: PropTypes.string,
+  quantity: PropTypes.number,
   setRequestId: PropTypes.func,
 };

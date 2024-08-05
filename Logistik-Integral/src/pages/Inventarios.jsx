@@ -1,25 +1,43 @@
 import { useNavigate } from "react-router-dom";
 import { Serials } from "../Routes/RenderRoutes.jsx";
-import { useContext, useEffect, useState, memo } from "react";
-import fetchRefQuantity from "../fetch/fetchSingleRefQuantity.js";
+import { useContext, useEffect, useState, memo, useCallback } from "react";
+import { UserType } from "../App.jsx";
+
+import fetchRequestData from "../Services/fetch.js";
 import getFamilySymbol from "../Services/getFamilySymbol.js";
 import PropTypes from "prop-types";
 
 const Inventarios = memo(function Inventarios({
   Family,
   Ref,
-  // Marca, para sumar al final, antes de entregar el proyecto
   Total,
   Id_Ref,
+  SearchWord,
 }) {
   const navigateTo = useNavigate();
+  const [requestQuantity, setRequestQuantity] = useState([]);
+  const [className, setClassName] = useState("inventory-container");
 
-  const [requestQuantity, setRequestQuantity] = useState(null);
   const { setSerialRef } = useContext(Serials);
+  const { userType } = useContext(UserType);
 
   useEffect(() => {
-    fetchRefQuantity().then((res) => setRequestQuantity(res));
+    fetchRequestData("refQuntity").then((res) => setRequestQuantity(res));
   }, []);
+
+  const searchFilter = useCallback(() => {
+    if (!Ref.toLowerCase().includes(SearchWord.toLowerCase())) {
+      setClassName("hideDiv");
+    } else {
+      setClassName("inventory-container");
+    }
+  }, [Ref, SearchWord]);
+
+  useEffect(() => {
+    if (userType == "Auxiliar") {
+      searchFilter();
+    }
+  }, [SearchWord, searchFilter, userType]);
 
   function handleClick() {
     setSerialRef(Ref);
@@ -27,7 +45,7 @@ const Inventarios = memo(function Inventarios({
   }
 
   function lowInventorySymbol() {
-    if (requestQuantity != null) {
+    if (Array.isArray(requestQuantity) && requestQuantity.length > 0) {
       let refQuantity = requestQuantity.find(
         (element) => element.ref == Id_Ref
       );
@@ -37,9 +55,9 @@ const Inventarios = memo(function Inventarios({
 
   return (
     <>
-      <div id="inventory-container">
+      <div id={className}>
         {lowInventorySymbol() != undefined &&
-        lowInventorySymbol().total + 10 > Total ? (
+        lowInventorySymbol().total + 20 > Total ? (
           <div
             style={{
               display: "flex",
@@ -88,6 +106,7 @@ Inventarios.propTypes = {
   Marca: PropTypes.string,
   Total: PropTypes.number,
   Id_Ref: PropTypes.number,
+  SearchWord: PropTypes.string,
 };
 
 export default Inventarios;

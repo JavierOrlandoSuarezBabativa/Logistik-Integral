@@ -2,7 +2,7 @@
     position: relative;
     height: fit-content;
     width: 90vw;
-    padding: 55px;
+    padding: 5px;
     border-radius: 15px;
     background: #fbfafa;
     margin: 10px auto;
@@ -10,12 +10,12 @@
 
 #solicitute-details-container div {
     width: 90%;
-    margin: 25px auto;
+    margin: 1rem auto;
 }
 
 
 #solicitute-details-container h4{
-    font-size: 18px;
+    font-size: 2rem;
     margin-left: 6px;
 }
 
@@ -25,7 +25,7 @@
     background: #5154a47c;
     padding: 10px;
     margin: 2px auto;
-    font-size: 15px;
+    font-size: 1.5rem;
     overflow-wrap: break-word;
 }
 

@@ -45,7 +45,7 @@ export default function SingleRef() {
   function createSeriales() {
     for (let i = 0; i < inputs.length; i++) {
       axios
-        .post("http://localhost:3003/seriales", {
+        .post("http://localhost:3002/seriales", {
           newRef: uniqueRef.Id_Referencia,
           newSerial: serialesArray[i],
         })

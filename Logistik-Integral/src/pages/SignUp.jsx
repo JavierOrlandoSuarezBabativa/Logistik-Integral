@@ -1,38 +1,52 @@
 import "../styles/Login.css";
-import { useNavigate } from "react-router-dom";
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Axios from "axios";
+import GetUserInfo from "../Services/GetUserInfo";
 
 export default function SignUp() {
-  const [userName, setUserName] = useState("");
-  const [userLastName, setUserLastName] = useState("");
-  const [userID, setUserID] = useState("");
-  const [userPhone, setUserPhone] = useState("");
-  const [userRol, setUserRol] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [userNumber, setUserNumber] = useState("");
-
   const navigateTo = useNavigate();
 
+  const { newInfo, addInfo } = GetUserInfo();
+
+  const [changeButtons, setChangeButtons] = useState(false);
+  const [code, setCode] = useState(null);
+  const [confirmationCode, setConfirmacionCode] = useState("");
+
   function createUser() {
-    Axios.post("http://localhost:3002/registro", {
-      UserName: userName,
-      UserLastName: userLastName,
-      UserID: userID,
-      UserPhone: userPhone,
-      UserRol: userRol,
-      UserPassword: userPassword,
-      UserNumber: userNumber,
-    }).then(
-      navigateTo("/"),
-      setUserName(""),
-      setUserLastName(""),
-      setUserID(""),
-      setUserPhone(""),
-      setUserRol(""),
-      setUserPassword(""),
-      setUserNumber("")
-    );
+    Axios.post("http://localhost:3002/registro", newInfo).then(navigateTo("/"));
+  }
+
+  function getCode() {
+    if (checkEmptyValues(newInfo)) {
+      console.log("empty inputs");
+    } else {
+      Axios.get(`http://localhost:3002/Codigo/${newInfo.mail}`).then((res) =>
+        setCode(res.data[0].Codigo)
+      );
+      setChangeButtons(true);
+    }
+  }
+
+  function getConfirmacionCode(event) {
+    setConfirmacionCode(event.target.value);
+  }
+
+  function checkEmptyValues(obj) {
+    let values = Object.values(obj);
+    for (let data of values) {
+      if (data == "") {
+        Object.keys(obj).forEach((key) => {
+          if (obj[key] == "") {
+            obj[key] = "";
+          }
+        });
+        return true;
+      }
+    }
+    return false;
   }
 
   return (
@@ -45,11 +59,9 @@ export default function SignUp() {
             <i className="material-icons">person</i>
             <input
               type="text"
-              name="userName"
+              name="name"
               placeholder="Nombre"
-              onChange={(e) => {
-                setUserName(e.target.value);
-              }}
+              onChange={addInfo}
             />
           </div>
 
@@ -57,11 +69,9 @@ export default function SignUp() {
             <i className="material-icons">person_add</i>
             <input
               type="text"
-              name="userLastName"
+              name="lastname"
               placeholder="Apellido"
-              onChange={(e) => {
-                setUserLastName(e.target.value);
-              }}
+              onChange={addInfo}
             />
           </div>
 
@@ -69,11 +79,9 @@ export default function SignUp() {
             <i className="material-icons">fingerprint</i>
             <input
               type="text"
-              name="userID"
+              name="id"
               placeholder="Cedula"
-              onChange={(e) => {
-                setUserID(e.target.value);
-              }}
+              onChange={addInfo}
             />
           </div>
 
@@ -81,22 +89,14 @@ export default function SignUp() {
             <i className="material-icons">call</i>
             <input
               type="text"
-              name="userPhone"
+              name="phone"
               placeholder="Celular"
-              onChange={(e) => {
-                setUserPhone(e.target.value);
-              }}
+              onChange={addInfo}
             />
           </div>
 
           <div className="information-requirement-input">
-            <select
-              name="userRol"
-              className="select-container"
-              onChange={(e) => {
-                setUserRol(e.target.value);
-              }}
-            >
+            <select name="role" className="select-container" onChange={addInfo}>
               <option value="">Rol de usuario</option>
               <option value="Administrador">Administrador</option>
               <option value="Auxiliar">Auxiliar</option>
@@ -108,11 +108,9 @@ export default function SignUp() {
             <i className="material-icons">password</i>
             <input
               type="password"
-              name="userPassword"
+              name="password"
               placeholder="Contraseña"
-              onChange={(e) => {
-                setUserPassword(e.target.value);
-              }}
+              onChange={addInfo}
             />
           </div>
 
@@ -122,17 +120,45 @@ export default function SignUp() {
               id="bodegaId"
               className="werehouse"
               type="number"
-              name="userNumber"
-              onChange={(e) => {
-                setUserNumber(e.target.value);
-              }}
+              name="werehouseNUmber"
+              onChange={addInfo}
             />
           </div>
 
+          {changeButtons ? (
+            <div className="information-requirement-input">
+              <label htmlFor="Code">Codigo de Confirmacion</label>
+              <input
+                id="Code"
+                className="werehouse"
+                type="number"
+                value={confirmationCode}
+                onChange={getConfirmacionCode}
+              />
+            </div>
+          ) : (
+            <div className="information-requirement-input">
+              <i className="material-icons">email</i>
+              <input
+                id="bodegaId"
+                type="email"
+                name="mail"
+                placeholder="Correo"
+                onChange={addInfo}
+              />
+            </div>
+          )}
+
           <div className="button">
-            <button id="register_button" type="submit" onClick={createUser}>
-              Confirmar
-            </button>
+            {changeButtons && code == confirmationCode ? (
+              <button id="register_button" type="submit" onClick={createUser}>
+                Crear Cuenta
+              </button>
+            ) : (
+              <button id="register_button" type="submit" onClick={getCode}>
+                Solicitar codigo
+              </button>
+            )}
             <hr />
             <button onClick={() => navigateTo("/")}>Cancelar</button>
           </div>

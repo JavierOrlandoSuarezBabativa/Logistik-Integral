@@ -11,30 +11,45 @@
     display: grid;
     grid-template-columns: repeat(2, 25%) 50%;
     grid-template-rows: repeat(3, 50px);
-    margin-top: 10px;
+    margin-top: 0 auto;
     width: 90vw;
+    height: 90%;
     border: #150303 solid 1px;
     border-radius: 5px;
 }
 
+.register-container-alert {
+    display: grid;
+    grid-template-columns: repeat(2, 25%) 50%;
+    grid-template-rows: repeat(3, 50px);
+    margin-top: 0 auto;
+    width: 90vw;
+    height: 90%;
+    border: #e10505 solid 2px;
+    border-radius: 5px;
+}
+
 .register-container-item {
+    position: relative;
     text-align: center;
     border: 1px solid #100f15;
     border-radius: 2px;
     background: #9a919123;
+    line-height: 1.2rem;
 }
 
 
 .register-container-item p {
     width: 98%;
-    font-size: 13px;
+    font-size: 0.8rem;
     margin-top: 5px;
    overflow-wrap: break-word;
+   line-height: 1rem;
 }
 
 .register-container-item h4 {
     margin-top: 5px;
-    font-size: 13px;
+    font-size: 1rem;
 }
 
 #observaciones {
@@ -77,4 +92,17 @@
     color: #fff;
     text-align: center;
     font-size: larger;
+}
+
+.delete-can {
+    position: absolute;
+    color: rgb(193, 26, 26);
+    top: -15px;
+    right: -15px;
+    font-size: 2rem;
+}
+
+.verified-icon {
+    color: rgb(53, 215, 42);
+    font-size: 3rem;
 }

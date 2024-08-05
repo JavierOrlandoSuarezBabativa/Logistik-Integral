@@ -1,3 +1,4 @@
+
 #inventory-container {
     position: relative;
     width: 90vw;
@@ -6,6 +7,10 @@
     border-radius: 15px;
     margin: 10px auto;
     background: #fbfafa;
+}
+
+#hideDiv {
+    display: none;
 }
 
 .inventory-firstLine {

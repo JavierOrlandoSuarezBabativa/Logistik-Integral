@@ -1,15 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './styles/Header.css'
-import './styles/GuiasInput.css'
-import './styles/CrearSolicitud.css'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./styles/Header.css";
+import "./styles/GuiasInput.css";
+import "./styles/CrearSolicitud.css";
 
-
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App></App>
-  </React.StrictMode>,
-)
-
+  </React.StrictMode>
+);

@@ -31,20 +31,3 @@ app2.get("/", (req, res) => {
     }
   });
 });
-
-app2.post("/seriales", (req, res) => {
-  const sentRef = req.body.newRef;
-  const sentSerial = req.body.newSerial;
-
-  const SQL = "INSERT INTO seriales (id_Ref, Serial) VALUES (?,?)";
-
-  const Values = [sentRef, sentSerial];
-
-  db.query(SQL, Values, (err, results) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send({ message: "Cantidad Ok" });
-    }
-  });
-});

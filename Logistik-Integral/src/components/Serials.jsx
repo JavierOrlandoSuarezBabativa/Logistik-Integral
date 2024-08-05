@@ -23,7 +23,6 @@ export default function Serial({
     marginTop: "8px",
     marginBottom: "8px",
     fontSize: "1rem",
-    border: "1px solid #000",
     borderRadius: "10px",
     width: "95%",
     height: "2rem",

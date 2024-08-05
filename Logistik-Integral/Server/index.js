@@ -20,13 +20,13 @@ app.listen(3002, () => {
 
 // Registro de nuevos usuarios OK!
 app.post("/registro", (req, res) => {
-  const sentUsername = req.body.UserName;
-  const sentUserLastName = req.body.UserLastName;
-  const sentUserID = req.body.UserID;
-  const sentUserPhone = req.body.UserPhone;
-  const sentRol = req.body.UserRol;
-  const sentPassword = req.body.UserPassword;
-  const sentNumber = req.body.UserNumber;
+  const sentUsername = req.body.name;
+  const sentUserLastName = req.body.lastname;
+  const sentUserID = req.body.id;
+  const sentUserPhone = req.body.phone;
+  const sentRol = req.body.role;
+  const sentPassword = req.body.password;
+  const sentNumber = req.body.werehouseNUmber;
 
   const SQL =
     "INSERT INTO usuarios (Nombre, Apellido, Cedula, Celular, Cargo, Contraseña, Bodegas_Id_Bodega) VALUES (?,?,?,?,?,?,?)";
@@ -50,7 +50,7 @@ app.post("/registro", (req, res) => {
   });
 });
 
-// login de los usuarios ya registrados
+// Registered users login query
 app.post("/login", (req, res) => {
   const SentUsername = req.body.name;
   const SentRol = req.body.rol;
@@ -65,6 +65,7 @@ app.post("/login", (req, res) => {
     if (err) {
       res.send(err);
     }
+
     if (results.length > 0) {
       res.send(results);
     } else {
@@ -208,7 +209,7 @@ app.post("/detalles", (req, res) => {
   });
 });
 
-// Para registrar salidas
+// To register warehouse inventories exit
 app.post("/salidas", (req, res) => {
   const SentBrand = req.body.brand;
   const SentRef = req.body.ref;
@@ -228,9 +229,26 @@ app.post("/salidas", (req, res) => {
   });
 });
 
+app.post("/seriales", (req, res) => {
+  const sentRef = req.body.newRef;
+  const sentSerial = req.body.newSerial;
+
+  const SQL = "INSERT INTO seriales (id_Ref, Serial) VALUES (?,?)";
+
+  const Values = [sentRef, sentSerial];
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send({ message: "Cantidad Ok" });
+    }
+  });
+});
+
 // --------------------------------------------------------------------------------------------------------------
 
-// Referencias y cantidades totales
+// References and total amounts
 app.get("/", (req, res) => {
   const SQLReferencias =
     "SELECT referencias.Modulos_Id_Modulo as Family, referencias.Id_Referencia as Id_Ref, referencias.Referencia_Equipo as Ref, referencias.Marca, count(seriales.id_Serial) as Total FROM referencias inner join seriales on referencias.Id_Referencia = seriales.id_Ref GROUP BY referencias.Referencia_Equipo";
@@ -316,7 +334,7 @@ app.get("/RequestsData", (req, res) => {
   });
 });
 
-// Solicitud individual
+// Single Request
 app.get("/RequestInfo", (req, res) => {
   const SQLReferencias =
     "SELECT solicitudes.Numero_Solicitud as Id, solicitudes.Destinatarios_Id_Destinatario as IdDestinatario, solicitudes.Cantidad, referencias.Id_Referencia as IdRef, referencias.Modulos_Id_Modulo as Familia , referencias.Referencia_Equipo as Referencia, referencias.Marca from solicitudes INNER join referencias on solicitudes.Id_Referencia = referencias.Id_Referencia ORDER BY IdDestinatario ASC";
@@ -360,6 +378,19 @@ app.get("/Registros/:firstDate/:secondDate", (req, res) => {
       }
     }
   );
+});
+
+app.get("/Codigo/:id", (req, res) => {
+  const SentMail = req.params.id;
+  const SQLReferencias = `SELECT Codigo from nuevo_usuario WHERE Correo = ?`;
+
+  db.query(SQLReferencias, [SentMail], (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(result);
+    }
+  });
 });
 
 // -------------------------------------------------------------------------------------------------

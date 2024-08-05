@@ -3,8 +3,7 @@ import "../styles/GestionSolicitud.css";
 import { RequestId } from "../Routes/RenderRoutes.jsx";
 import { useContext, useEffect, useState } from "react";
 
-import fetchRequests from "../fetch/fetchRequests.js";
-import fetchSeriales from "../fetch/fetchSeriales.js";
+import fetchRequestData from "../Services/fetch.js";
 import getSingleRequest from "../Services/getSingleRequest.js";
 
 import Request from "../components/Request.jsx";
@@ -18,8 +17,8 @@ export default function GestionSolicitud() {
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    fetchRequests().then((res) => setRequests(res));
-    fetchSeriales().then((res) => setSerials(res));
+    fetchRequestData("RequestInfo").then((res) => setRequests(res));
+    fetchRequestData("seriales").then((res) => setSerials(res));
   }, []);
 
   let currentRequest;
@@ -32,7 +31,8 @@ export default function GestionSolicitud() {
 
   return (
     <>
-      {currentRequest != undefined &&
+      {!showDetails &&
+        currentRequest != undefined &&
         currentRequest.map(({ Id, Referencia, Cantidad, IdRef, Marca }) => {
           return (
             <Request
@@ -50,6 +50,9 @@ export default function GestionSolicitud() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          marginTop: "1.5rem",
+          marginBottom: "1.5rem",
+          padding: "5px",
         }}
       >
         <button

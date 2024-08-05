@@ -1,7 +1,7 @@
 import "../styles/FrontPage.css";
 import Logo from "../assets/logo_1.png";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { UserType } from "../App";
 
@@ -11,6 +11,8 @@ import Uselogin from "../dinamicHooks/UseLogin.jsx";
 import Login from "../Services/Login.jsx";
 
 function FrontPage() {
+  const navigateTo = useNavigate();
+
   const { error, switchUserType } = Login();
 
   const { userInfo, checkUserInfo, setUserInfo } = Uselogin();
@@ -25,19 +27,29 @@ function FrontPage() {
       setTimeout(() => {
         setStatusHolder("message");
         setLoginStatus("");
-      }, 1500);
+      }, 2500);
     }
   }, [loginStatus]);
 
   function loginUser(e) {
     e.preventDefault();
-    Axios.post("http://localhost:3002/login", userInfo).then((response) => {
-      if (response.data.message) {
-        error(response, setLoginStatus, setUserInfo);
-      } else {
-        switchUserType(response, setUserType, setIsActive);
-      }
-    });
+    if (userInfo.name == "" || userInfo.rol == "" || userInfo.password == "") {
+      navigateTo("/");
+      setLoginStatus("Error, diligenciar todos los campos del formulario");
+      setUserInfo({
+        name: "",
+        rol: "",
+        password: "",
+      });
+    } else {
+      Axios.post("http://localhost:3002/login", userInfo).then((response) => {
+        if (response.data.message) {
+          error(response, setLoginStatus, setUserInfo, userInfo);
+        } else {
+          switchUserType(response, setUserType, setIsActive);
+        }
+      });
+    }
   }
 
   return (
@@ -57,6 +69,8 @@ function FrontPage() {
               placeholder="Nombre de usuario"
               value={userInfo.name}
               onChange={checkUserInfo}
+              autoFocus
+              autoComplete="off"
             />
           </div>
 
@@ -87,12 +101,12 @@ function FrontPage() {
 
           <div className="button">
             <button id="log-in_button" type="submit" onClick={loginUser}>
-              INGRESAR
+              Ingresar
             </button>
             <hr />
             <Link to={"/signUp"}>
               <button id="register_button" type="submit">
-                SIGN UP
+                Registrarse
               </button>
             </Link>
           </div>

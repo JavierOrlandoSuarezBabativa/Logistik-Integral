@@ -2,8 +2,7 @@ import "../styles/Solicitudes.css";
 
 import { useState, useEffect, useContext } from "react";
 
-import fetchRequestData from "../fetch/fetchRequestData.js";
-
+import fetch from "../Services/fetch.js";
 import RequestDetails from "../components/RequestDetails.jsx";
 
 import { RequestId } from "../Routes/RenderRoutes.jsx";
@@ -14,16 +13,15 @@ export default function Solicitudes() {
   const { setRequestId } = useContext(RequestId);
 
   useEffect(() => {
-    fetchRequestData().then((requestsResponse) =>
+    fetch("RequestsData").then((requestsResponse) =>
       setReferencesData(requestsResponse)
     );
   }, []);
 
   return (
     <>
-      {/* Falta agregar la cantidad total de equipos por enviar */}
       {requestsData != undefined &&
-        requestsData.map(({ status, observations, date, Id, request }) => {
+        requestsData.map(({ status, observations, date, Id, quantity }) => {
           return (
             <RequestDetails
               key={Id}
@@ -31,7 +29,7 @@ export default function Solicitudes() {
               status={status}
               observations={observations}
               date={date}
-              request={request}
+              quantity={quantity}
               setRequestId={setRequestId}
             />
           );

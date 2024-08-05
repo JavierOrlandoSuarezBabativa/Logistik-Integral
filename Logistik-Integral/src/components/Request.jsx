@@ -33,9 +33,10 @@ export default function Request({
 
           <div className="grid-item">
             <h3>Referencia</h3>
-            <p id="reference-solicitute">{referencia}</p>
+            <p>{referencia}</p>
             <p>{marca}</p>
           </div>
+
           <div className="grid-item checkbox">
             {checkBoxStatus ? (
               <>

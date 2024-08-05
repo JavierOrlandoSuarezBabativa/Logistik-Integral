@@ -21,13 +21,33 @@ export default function References({
     setSingleRef(hash);
   }
 
+  let firstDot;
+  let secondDot;
+
+  function priceFormat(valor) {
+    let toString = valor.toString();
+    let fullprice;
+    firstDot = toString.slice(-3);
+    if (toString.length == 7) {
+      secondDot = toString.slice(1, 4);
+      fullprice = toString.at(0) + "." + secondDot + "." + firstDot;
+    } else {
+      if (toString.length == 6) {
+        secondDot = toString.slice(0, 3);
+        fullprice = secondDot + "." + firstDot;
+      }
+    }
+
+    return fullprice;
+  }
+
   return (
     <>
       <div className="solicitutes-container">
         <div className="register-container">
           <div className="estatus-register register-container-item">
             <h4>Valor</h4>
-            <p>{`$${valor},00`}</p>
+            <p>{`$${priceFormat(valor)},00`}</p>
           </div>
 
           <div className="observations-register register-container-item">

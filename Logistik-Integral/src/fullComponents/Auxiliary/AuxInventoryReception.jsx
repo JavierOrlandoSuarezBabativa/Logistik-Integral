@@ -5,8 +5,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Refs } from "../../Routes/RenderRoutes.jsx";
 
 import UseCreateNewMachine from "../../dinamicHooks/UseCreateNewMachine.jsx";
-
-import Axios from "axios";
+import fetchRequestData from "../../Services/fetch.js";
 
 export const MachineFamily = React.createContext();
 
@@ -21,18 +20,13 @@ export default function AuxInventoryReception() {
     return ref.Modulos_Id_Modulo == machineFamily;
   });
 
-  async function fetchReferencias() {
-    try {
-      const res = await Axios("http://localhost:3002/sqlReferencias");
-      setReferencesData(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   useEffect(() => {
-    fetchReferencias();
-  }, []);
+    try {
+      fetchRequestData("sqlReferencias").then((res) => setReferencesData(res));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [setReferencesData]);
 
   return (
     <MachineFamily.Provider value={{ setMachineFamily, referencesFiltered }}>
